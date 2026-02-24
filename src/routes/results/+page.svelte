@@ -4,6 +4,8 @@
 	import { quiz } from '$lib/stores/quiz';
 	import { getRoleLabel } from '$lib/engine/roles';
 	import { getCommentary } from '$lib/utils/commentary';
+	import { computeReach, type QuestionReachStats, type ReachRow } from '$lib/utils/reach';
+	import { QUESTIONS } from '$lib/data/questions';
 	import ResultCard from '$lib/components/ResultCard.svelte';
 
 	let { data } = $props();
@@ -12,6 +14,7 @@
 		{} as import('$lib/stores/quiz').QuizState
 	);
 	let isSharedView = $state(false);
+	let questionStats = $state<QuestionReachStats[] | undefined>(undefined);
 
 	onMount(() => {
 		quiz.init();
@@ -29,6 +32,7 @@
 			}
 		});
 		submitAnalytics();
+		fetchReachStats();
 		return unsub;
 	});
 
@@ -59,6 +63,27 @@
 		}
 	}
 
+	async function fetchReachStats() {
+		const s = quizState;
+		if (!s.actualRole) return;
+
+		try {
+			const params = new URLSearchParams({ actualRole: s.actualRole });
+			const res = await fetch(`/api/analytics/stats?${params}`);
+			const data = await res.json();
+			if (!data.available) return;
+
+			questionStats = computeReach(
+				(data.reach ?? []) as ReachRow[],
+				(data.reachFiltered ?? null) as ReachRow[] | null,
+				data.total ?? 0,
+				QUESTIONS.length
+			);
+		} catch {
+			// Stats failure is non-critical
+		}
+	}
+
 	function handleRestart() {
 		quiz.restart();
 		goto('/');
@@ -71,7 +96,7 @@
 			r: s.achievedRoleId ?? 'none',
 			a: s.actualRole,
 			c: String(correctCount),
-			t: String(s.answers.length)
+			t: String(QUESTIONS.length)
 		});
 		const url = `${window.location.origin}/results?${params}`;
 		navigator.clipboard.writeText(url).catch(() => {
@@ -115,6 +140,7 @@
 			actualRole={quizState.actualRole}
 			achievedRoleId={quizState.achievedRoleId}
 			answers={quizState.answers}
+			{questionStats}
 			onrestart={handleRestart}
 			onshare={handleShare}
 		/>

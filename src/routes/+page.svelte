@@ -30,24 +30,15 @@
 <div class="container landing">
 	<header class="entrance entrance-1">
 		<h1><span class="accent">namea</span>.dev</h1>
-		<p class="subtitle">The quiz that determines your <em>real</em> engineering title.</p>
 	</header>
 
-	<div class="description entrance entrance-2">
-		<p>Each question starts with <strong>"Name a..."</strong></p>
-		<p>Get it right, you advance. Get it wrong, your role is locked forever.</p>
-		<p>Questions get increasingly absurd. Good luck.</p>
-	</div>
-
 	{#if hasExistingSession}
-		<div class="resume entrance entrance-3">
-			<p>You have a quiz in progress.</p>
+		<div class="resume entrance entrance-2">
 			<button class="primary" onclick={resumeQuiz}>Resume quiz</button>
 			<button onclick={() => { hasExistingSession = false; }}>Start fresh</button>
 		</div>
 	{:else}
-		<div class="start-form entrance entrance-3">
-			<label for="role-select">What's your actual role?</label>
+		<div class="start-form entrance entrance-2">
 			<select id="role-select" onchange={(e) => start(e.currentTarget.value)}>
 				<option value="" disabled selected>Pick your role...</option>
 				{#each ACTUAL_ROLES as role}
@@ -79,39 +70,17 @@
 	.accent {
 		color: var(--accent);
 	}
-	.subtitle {
-		color: var(--text-dim);
-		font-size: 1rem;
-	}
-	.description {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-		color: var(--text);
-		font-size: 0.875rem;
-	}
-	.description strong {
-		color: var(--text-bright);
-	}
-	.start-form {
+.start-form {
 		display: flex;
 		flex-direction: column;
 		gap: 0.75rem;
 	}
-	.start-form label {
-		color: var(--text-dim);
-		font-size: 0.875rem;
-	}
-	.resume {
+.resume {
 		display: flex;
 		flex-direction: column;
 		gap: 0.75rem;
 	}
-	.resume p {
-		color: var(--text-dim);
-		font-size: 0.875rem;
-	}
-	.entrance {
+.entrance {
 		animation: slide-up 250ms ease-out both;
 	}
 	.entrance-1 {
@@ -119,8 +88,5 @@
 	}
 	.entrance-2 {
 		animation-delay: 80ms;
-	}
-	.entrance-3 {
-		animation-delay: 160ms;
 	}
 </style>

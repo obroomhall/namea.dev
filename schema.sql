@@ -12,3 +12,4 @@ CREATE TABLE quiz_completions (
 
 CREATE INDEX idx_actual_role ON quiz_completions(actual_role);
 CREATE INDEX idx_achieved_role ON quiz_completions(achieved_role_id);
+CREATE INDEX idx_correct_answers ON quiz_completions(correct_answers);

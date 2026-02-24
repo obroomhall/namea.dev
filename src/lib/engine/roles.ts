@@ -25,11 +25,7 @@ export const ACTUAL_ROLES = [
 	'Mid-Level Engineer',
 	'Senior Engineer',
 	'Staff Engineer',
-	'Principal Engineer',
-	'Engineering Manager',
-	'Director of Engineering',
-	'VP of Engineering',
-	'CTO'
+	'Principal Engineer'
 ];
 
 export function getRoleById(id: string): Role | undefined {
