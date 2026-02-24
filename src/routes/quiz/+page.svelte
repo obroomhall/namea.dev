@@ -194,6 +194,14 @@
 		{/if}
 
 		<div class="quiz-footer">
+			<RoleDisplay
+				achievedRoleId={quizState.achievedRoleId}
+				currentIndex={quizState.currentIndex}
+				answeredCount={quizState.answers?.length ?? 0}
+				roleLocked={quizState.roleLocked}
+				actualRole={quizState.actualRole}
+				onjump={handleJump}
+			/>
 			{#if currentReach}
 				<div class="reach-hint">
 					<div class="reach-row">
@@ -212,14 +220,6 @@
 					{/if}
 				</div>
 			{/if}
-			<RoleDisplay
-				achievedRoleId={quizState.achievedRoleId}
-				currentIndex={quizState.currentIndex}
-				answeredCount={quizState.answers?.length ?? 0}
-				roleLocked={quizState.roleLocked}
-				actualRole={quizState.actualRole}
-				onjump={handleJump}
-			/>
 		</div>
 	</div>
 {/if}
