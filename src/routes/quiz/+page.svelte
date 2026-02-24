@@ -250,6 +250,9 @@
 	.quiz-footer {
 		margin-top: auto;
 		padding-bottom: 2rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
 	}
 	.question-section {
 		display: flex;
