@@ -141,10 +141,8 @@
 	}
 	.quiz-header {
 		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		flex-wrap: wrap;
-		gap: 0.5rem;
+		flex-direction: column;
+		gap: 0.25rem;
 	}
 	.claimed {
 		color: var(--text-dim);

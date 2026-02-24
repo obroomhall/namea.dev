@@ -60,7 +60,11 @@
 			onkeydown={(e) => handleKeydown(e, i)}
 		>
 			{#if i === currentIndex}
-				<span class="current-label">{getRoleLabel(q.roleId)}</span>
+				<span
+					class="current-label"
+					class:align-start={i === 0}
+					class:align-end={i === QUESTIONS.length - 1}
+				>{getRoleLabel(q.roleId)}</span>
 			{/if}
 		</button>
 	{/each}
@@ -72,7 +76,7 @@
 		align-items: center;
 		gap: 0;
 		width: 100%;
-		overflow-x: auto;
+		overflow: visible;
 		padding: 1.25rem 0 0.25rem;
 	}
 	.connector {
@@ -130,5 +134,14 @@
 		color: var(--text);
 		font-weight: 600;
 		pointer-events: none;
+	}
+	.current-label.align-start {
+		left: 0;
+		transform: none;
+	}
+	.current-label.align-end {
+		left: auto;
+		right: 0;
+		transform: none;
 	}
 </style>
