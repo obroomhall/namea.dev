@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { fly, fade } from 'svelte/transition';
 
 	let {
 		correct,
@@ -32,12 +33,12 @@
 	});
 </script>
 
-<div class="feedback" class:correct class:wrong={!correct}>
+<div class="feedback" class:correct class:wrong={!correct} in:fly={{ y: 8, duration: 200 }}>
 	{#if correct}
-		<div class="result-line correct-text">Correct!</div>
+		<div class="result-line correct-text"><span class="icon">&#10003;</span> Correct!</div>
 		<div class="canonical">{canonical}</div>
 	{:else}
-		<div class="result-line wrong-text">Wrong.</div>
+		<div class="result-line wrong-text"><span class="icon">&#10007;</span> Wrong.</div>
 		{#if example}
 			<div class="example">Example answer: <strong>{example}</strong></div>
 		{/if}
@@ -72,6 +73,12 @@
 	.result-line {
 		font-size: 1.25rem;
 		font-weight: 700;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+	.icon {
+		font-size: 1rem;
 	}
 	.correct-text {
 		color: var(--accent);

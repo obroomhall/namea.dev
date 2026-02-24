@@ -29,25 +29,25 @@
 </script>
 
 <div class="container landing">
-	<header>
+	<header class="entrance entrance-1">
 		<h1><span class="accent">namea</span>.dev</h1>
 		<p class="subtitle">The quiz that determines your <em>real</em> engineering title.</p>
 	</header>
 
-	<div class="description">
+	<div class="description entrance entrance-2">
 		<p>Each question starts with <strong>"Name a..."</strong></p>
 		<p>Get it right, you advance. Get it wrong, your role is locked forever.</p>
 		<p>Questions get increasingly absurd. Good luck.</p>
 	</div>
 
 	{#if hasExistingSession}
-		<div class="resume">
+		<div class="resume entrance entrance-3">
 			<p>You have a quiz in progress.</p>
 			<button class="primary" onclick={resumeQuiz}>Resume quiz</button>
 			<button onclick={() => { hasExistingSession = false; }}>Start fresh</button>
 		</div>
 	{:else}
-		<div class="start-form">
+		<div class="start-form entrance entrance-3">
 			<label for="role-select">What's your actual role?</label>
 			<select id="role-select" bind:value={selectedRole}>
 				<option value="" disabled>Pick your role...</option>
@@ -112,5 +112,17 @@
 	.resume p {
 		color: var(--text-dim);
 		font-size: 0.875rem;
+	}
+	.entrance {
+		animation: slide-up 250ms ease-out both;
+	}
+	.entrance-1 {
+		animation-delay: 0ms;
+	}
+	.entrance-2 {
+		animation-delay: 80ms;
+	}
+	.entrance-3 {
+		animation-delay: 160ms;
 	}
 </style>

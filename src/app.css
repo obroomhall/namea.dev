@@ -46,12 +46,24 @@ button {
 	color: var(--text);
 	padding: 0.5rem 1rem;
 	font-size: 0.875rem;
-	transition: background 0.15s, border-color 0.15s;
+	transition: background 0.15s, border-color 0.15s, transform 0.1s;
 }
 
 button:hover {
 	background: var(--bg-hover);
 	border-color: var(--text-dim);
+	transform: translateY(-1px);
+}
+
+button:active {
+	transform: translateY(0);
+	background: var(--bg);
+}
+
+button:disabled {
+	opacity: 0.4;
+	cursor: not-allowed;
+	transform: none;
 }
 
 button.primary {
@@ -62,7 +74,15 @@ button.primary {
 }
 
 button.primary:hover {
-	opacity: 0.9;
+	filter: brightness(1.1);
+}
+
+button.primary:active {
+	filter: brightness(0.95);
+}
+
+button.primary:disabled {
+	filter: none;
 }
 
 input[type="text"] {
@@ -79,6 +99,7 @@ input[type="text"] {
 
 input[type="text"]:focus {
 	border-color: var(--accent);
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
 }
 
 input[type="text"]::placeholder {
@@ -123,4 +144,25 @@ select:focus {
 @keyframes flash-red {
 	0% { background-color: rgba(248, 113, 113, 0.2); }
 	100% { background-color: transparent; }
+}
+
+@keyframes fade-in {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+@keyframes slide-up {
+	from { opacity: 0; transform: translateY(8px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shake {
+	0%, 100% { transform: translateX(0); }
+	20%, 60% { transform: translateX(-3px); }
+	40%, 80% { transform: translateX(3px); }
+}
+
+@keyframes pulse-glow {
+	0%, 100% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent); }
+	50% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 15%, transparent); }
 }

@@ -1,5 +1,7 @@
 <script lang="ts">
 	import '../app.css';
+	import { page } from '$app/state';
+	import { fade } from 'svelte/transition';
 
 	let { children } = $props();
 </script>
@@ -9,4 +11,8 @@
 	<meta name="description" content="Name a... quiz for software developers" />
 </svelte:head>
 
-{@render children()}
+{#key page.url.pathname}
+	<div in:fade={{ duration: 150 }}>
+		{@render children()}
+	</div>
+{/key}

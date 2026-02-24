@@ -110,6 +110,7 @@
 	</div>
 {:else if quizState.actualRole}
 	<div class="container results-page">
+		<div class="result-entrance">
 		<ResultCard
 			actualRole={quizState.actualRole}
 			achievedRoleId={quizState.achievedRoleId}
@@ -117,6 +118,7 @@
 			onrestart={handleRestart}
 			onshare={handleShare}
 		/>
+		</div>
 	</div>
 {/if}
 
@@ -158,5 +160,8 @@
 	}
 	.shared-score {
 		color: var(--text-dim);
+	}
+	.result-entrance {
+		animation: slide-up 250ms ease-out both;
 	}
 </style>

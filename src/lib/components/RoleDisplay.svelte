@@ -84,14 +84,15 @@
 		height: 2px;
 		min-width: 0.5rem;
 		background: var(--border);
+		transition: background 0.3s;
 	}
 	.connector.achieved {
 		background: var(--accent);
 	}
 	.node {
 		position: relative;
-		width: 12px;
-		height: 12px;
+		width: 16px;
+		height: 16px;
 		border-radius: 50%;
 		border: 2px solid var(--border);
 		background: transparent;
@@ -100,6 +101,16 @@
 		cursor: default;
 		font-family: inherit;
 		transition: border-color 0.15s, background 0.15s;
+	}
+	.node::after {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 32px;
+		height: 32px;
+		transform: translate(-50%, -50%);
+		border-radius: 50%;
 	}
 	.node.achieved {
 		background: var(--accent);
@@ -111,7 +122,7 @@
 	}
 	.node.current {
 		border-color: var(--accent);
-		box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent);
+		animation: pulse-glow 2s ease-in-out infinite;
 	}
 	.node.future {
 		opacity: 0.4;
