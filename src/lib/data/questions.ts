@@ -286,7 +286,7 @@ export const QUESTIONS: Question[] = [
 	},
 	{
 		roleId: 'dev-null',
-		prompt: 'Name a valid brainfuck program that produces output.',
+		prompt: 'Name a brainfuck program that produces output.',
 		answers: [
 			// Another special question — validated by format checking
 		],
