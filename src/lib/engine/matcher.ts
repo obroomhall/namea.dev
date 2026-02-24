@@ -38,7 +38,7 @@ export function checkAnswer(question: Question, input: string): MatchResult {
 	if (!trimmed) return { correct: false };
 
 	// Special question: UUID
-	if (question.roleId === 'cpu') {
+	if (question.roleId === 'linus') {
 		if (isValidUuid(trimmed)) {
 			return { correct: true, canonical: trimmed.toLowerCase() };
 		}
@@ -46,7 +46,7 @@ export function checkAnswer(question: Question, input: string): MatchResult {
 	}
 
 	// Special question: brainfuck
-	if (question.roleId === 'dev-null') {
+	if (question.roleId === 'the-entity') {
 		if (isValidBrainfuckWithOutput(trimmed)) {
 			return { correct: true, canonical: trimmed };
 		}
@@ -65,7 +65,7 @@ export function checkAnswer(question: Question, input: string): MatchResult {
 }
 
 export function getExampleAnswer(question: Question): string {
-	if (question.roleId === 'cpu') return '550e8400-e29b-41d4-a716-446655440000';
-	if (question.roleId === 'dev-null') return '++++++[>+++++++++<-]>.';
+	if (question.roleId === 'linus') return '550e8400-e29b-41d4-a716-446655440000';
+	if (question.roleId === 'the-entity') return '++++++[>+++++++++<-]>.';
 	return question.answers[0].canonical;
 }

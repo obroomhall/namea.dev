@@ -13,11 +13,7 @@ function actualRoleToId(actualRole: string): string | undefined {
 		'Mid-Level Engineer': 'mid',
 		'Senior Engineer': 'senior',
 		'Staff Engineer': 'staff',
-		'Principal Engineer': 'principal',
-		'Engineering Manager': 'principal',
-		'Director of Engineering': 'principal',
-		'VP of Engineering': 'principal',
-		'CTO': 'principal'
+		'Principal Engineer': 'principal'
 	};
 	return map[actualRole];
 }

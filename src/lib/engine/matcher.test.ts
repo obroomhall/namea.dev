@@ -59,58 +59,44 @@ describe('checkAnswer', () => {
 		});
 	});
 
-	describe('JS primitive types', () => {
-		it('accepts all seven primitives', () => {
-			for (const type of ['string', 'number', 'boolean', 'undefined', 'null', 'bigint', 'symbol']) {
-				expect(checkAnswer(q('junior'), type).correct).toBe(true);
-			}
-		});
-
-		it('rejects non-primitives', () => {
-			expect(checkAnswer(q('junior'), 'object').correct).toBe(false);
-			expect(checkAnswer(q('junior'), 'array').correct).toBe(false);
-			expect(checkAnswer(q('junior'), 'function').correct).toBe(false);
-		});
-	});
-
 	describe('UUID question', () => {
 		it('accepts a valid v4 UUID', () => {
-			const result = checkAnswer(q('cpu'), '550e8400-e29b-41d4-a716-446655440000');
+			const result = checkAnswer(q('linus'), '550e8400-e29b-41d4-a716-446655440000');
 			expect(result.correct).toBe(true);
 		});
 
 		it('accepts a UUID with uppercase', () => {
-			expect(checkAnswer(q('cpu'), 'A0B1C2D3-E4F5-6789-ABCD-EF0123456789').correct).toBe(true);
+			expect(checkAnswer(q('linus'), 'A0B1C2D3-E4F5-6789-ABCD-EF0123456789').correct).toBe(true);
 		});
 
 		it('rejects invalid format', () => {
-			expect(checkAnswer(q('cpu'), 'not-a-uuid').correct).toBe(false);
-			expect(checkAnswer(q('cpu'), '550e8400e29b41d4a716446655440000').correct).toBe(false);
-			expect(checkAnswer(q('cpu'), '').correct).toBe(false);
+			expect(checkAnswer(q('linus'), 'not-a-uuid').correct).toBe(false);
+			expect(checkAnswer(q('linus'), '550e8400e29b41d4a716446655440000').correct).toBe(false);
+			expect(checkAnswer(q('linus'), '').correct).toBe(false);
 		});
 	});
 
 	describe('brainfuck question', () => {
 		it('accepts a simple output program', () => {
-			const result = checkAnswer(q('dev-null'), '++++++[>+++++++++<-]>.');
+			const result = checkAnswer(q('the-entity'), '++++++[>+++++++++<-]>.');
 			expect(result.correct).toBe(true);
 		});
 
 		it('accepts minimal output', () => {
-			expect(checkAnswer(q('dev-null'), '.').correct).toBe(true);
+			expect(checkAnswer(q('the-entity'), '.').correct).toBe(true);
 		});
 
 		it('rejects program without output', () => {
-			expect(checkAnswer(q('dev-null'), '+++').correct).toBe(false);
+			expect(checkAnswer(q('the-entity'), '+++').correct).toBe(false);
 		});
 
 		it('rejects unbalanced brackets', () => {
-			expect(checkAnswer(q('dev-null'), '[.').correct).toBe(false);
-			expect(checkAnswer(q('dev-null'), '.]').correct).toBe(false);
+			expect(checkAnswer(q('the-entity'), '[.').correct).toBe(false);
+			expect(checkAnswer(q('the-entity'), '.]').correct).toBe(false);
 		});
 
 		it('rejects invalid characters', () => {
-			expect(checkAnswer(q('dev-null'), 'hello.world').correct).toBe(false);
+			expect(checkAnswer(q('the-entity'), 'hello.world').correct).toBe(false);
 		});
 	});
 });
@@ -121,11 +107,11 @@ describe('getExampleAnswer', () => {
 		expect(getExampleAnswer(q('intern'))).toBe('100 Continue');
 	});
 
-	it('returns example UUID for cpu question', () => {
-		expect(getExampleAnswer(q('cpu'))).toContain('-');
+	it('returns example UUID for linus question', () => {
+		expect(getExampleAnswer(q('linus'))).toContain('-');
 	});
 
-	it('returns example brainfuck for dev-null question', () => {
-		expect(getExampleAnswer(q('dev-null'))).toContain('.');
+	it('returns example brainfuck for the-entity question', () => {
+		expect(getExampleAnswer(q('the-entity'))).toContain('.');
 	});
 });
