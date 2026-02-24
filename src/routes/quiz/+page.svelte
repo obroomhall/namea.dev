@@ -3,7 +3,6 @@
 	import { onMount } from 'svelte';
 	import { quiz } from '$lib/stores/quiz';
 	import { QUESTIONS } from '$lib/data/questions';
-	import { ROLES } from '$lib/engine/roles';
 	import RoleDisplay from '$lib/components/RoleDisplay.svelte';
 	import Feedback from '$lib/components/Feedback.svelte';
 
@@ -31,6 +30,9 @@
 	});
 
 	const currentQuestion = $derived(QUESTIONS[quizState.currentIndex]);
+	const placeholder = $derived(
+		currentQuestion?.prompt.replace(/^Name an? /i, '').replace(/\.$/, '')
+	);
 	const isComplete = $derived(quizState.completed || quizState.currentIndex >= QUESTIONS.length);
 
 	function handleSubmit(e: Event) {
@@ -74,12 +76,19 @@
 		quiz.markComplete();
 		goto('/results');
 	}
+
+	function handleJump(index: number) {
+		quiz.jumpTo(index);
+		feedbackState = null;
+		inputValue = '';
+		setTimeout(() => inputEl?.focus(), 0);
+	}
 </script>
 
 {#if quizState.actualRole}
 	<div class="container quiz-page {flashClass}">
 		<div class="quiz-header">
-			<RoleDisplay roleId={quizState.achievedRoleId} locked={quizState.roleLocked} />
+			<h1><span class="accent">Name a</span>...</h1>
 			<span class="claimed">claimed: {quizState.actualRole}</span>
 		</div>
 
@@ -90,16 +99,13 @@
 			</div>
 		{:else if currentQuestion}
 			<div class="question-section">
-				<div class="counter">{quizState.currentIndex + 1} / {QUESTIONS.length}</div>
-				<h2 class="prompt">{currentQuestion.prompt}</h2>
-
 				{#if !feedbackState}
 					<form onsubmit={handleSubmit}>
 						<input
 							type="text"
 							bind:value={inputValue}
 							bind:this={inputEl}
-							placeholder="Type your answer..."
+							placeholder={placeholder}
 							autofocus
 						/>
 					</form>
@@ -117,6 +123,15 @@
 				{/if}
 			</div>
 		{/if}
+
+		<div class="quiz-footer">
+			<RoleDisplay
+				achievedRoleId={quizState.achievedRoleId}
+				currentIndex={quizState.currentIndex}
+				roleLocked={quizState.roleLocked}
+				onjump={handleJump}
+			/>
+		</div>
 	</div>
 {/if}
 
@@ -131,13 +146,25 @@
 	.quiz-header {
 		display: flex;
 		justify-content: space-between;
-		align-items: center;
-		flex-wrap: wrap;
+		align-items: baseline;
 		gap: 0.5rem;
+	}
+	.quiz-header h1 {
+		font-size: 2rem;
+		font-weight: 700;
+		color: var(--text-bright);
+		margin: 0;
+	}
+	.accent {
+		color: var(--accent);
 	}
 	.claimed {
 		color: var(--text-dim);
 		font-size: 0.75rem;
+	}
+	.quiz-footer {
+		margin-top: auto;
+		padding-bottom: 1rem;
 	}
 	.question-section {
 		display: flex;
@@ -145,16 +172,6 @@
 		gap: 1.5rem;
 		flex: 1;
 		justify-content: center;
-	}
-	.counter {
-		color: var(--text-dim);
-		font-size: 0.875rem;
-	}
-	.prompt {
-		font-size: 1.5rem;
-		font-weight: 700;
-		color: var(--text-bright);
-		line-height: 1.3;
 	}
 	.hint {
 		color: var(--text-dim);
