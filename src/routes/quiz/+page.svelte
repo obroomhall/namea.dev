@@ -3,12 +3,14 @@
 	import { onMount } from 'svelte';
 	import { quiz } from '$lib/stores/quiz';
 	import { QUESTIONS } from '$lib/data/questions';
+	import { computeReach, type QuestionReachStats, type ReachRow } from '$lib/utils/reach';
 	import RoleDisplay from '$lib/components/RoleDisplay.svelte';
 	import Feedback from '$lib/components/Feedback.svelte';
 
 	let quizState = $state(
 		{} as import('$lib/stores/quiz').QuizState
 	);
+	let questionStats = $state<QuestionReachStats[] | undefined>(undefined);
 	let feedbackState = $state<{
 		correct: boolean;
 		canonical?: string;
@@ -28,10 +30,31 @@
 				goto('/');
 			}
 		});
+		fetchReachStats();
 		return unsub;
 	});
 
+	async function fetchReachStats() {
+		const s = quizState;
+		if (!s.actualRole) return;
+		try {
+			const params = new URLSearchParams({ actualRole: s.actualRole });
+			const res = await fetch(`/api/analytics/stats?${params}`);
+			const data = await res.json();
+			if (!data.available) return;
+			questionStats = computeReach(
+				(data.reach ?? []) as ReachRow[],
+				(data.reachFiltered ?? null) as ReachRow[] | null,
+				data.total ?? 0,
+				QUESTIONS.length
+			);
+		} catch {
+			// Non-critical
+		}
+	}
+
 	const currentQuestion = $derived(QUESTIONS[quizState.currentIndex]);
+	const currentReach = $derived(questionStats?.[quizState.currentIndex]);
 	const placeholder = $derived(
 		currentQuestion?.prompt.replace(/^Name an? /i, '').replace(/\.$/, '')
 	);
@@ -167,6 +190,24 @@
 						onresults={goToResults}
 					/>
 				{/if}
+			{#if currentReach}
+				<div class="reach-hint">
+					<div class="reach-row">
+						<div class="reach-track">
+							<div class="reach-bar reach-bar-all" style="width: {currentReach.allPercent}%"></div>
+						</div>
+						<span class="reach-label">{currentReach.allPercent}% got this far</span>
+					</div>
+					{#if currentReach.rolePercent != null}
+						<div class="reach-row">
+							<div class="reach-track">
+								<div class="reach-bar reach-bar-role" style="width: {currentReach.rolePercent}%"></div>
+							</div>
+							<span class="reach-label">{currentReach.rolePercent}% of {quizState.actualRole}s</span>
+						</div>
+					{/if}
+				</div>
+			{/if}
 			</div>
 		{/if}
 
@@ -280,6 +321,43 @@
 	.review-canonical {
 		color: var(--text-dim);
 		font-size: 0.875rem;
+	}
+	.reach-hint {
+		display: flex;
+		flex-direction: column;
+		gap: 3px;
+	}
+	.reach-row {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+	.reach-track {
+		flex: 1;
+		height: 3px;
+		background: var(--border);
+		border-radius: 1px;
+		overflow: hidden;
+	}
+	.reach-bar {
+		height: 100%;
+		border-radius: 1px;
+		min-width: 1px;
+	}
+	.reach-bar-all {
+		background: var(--text-dim);
+		opacity: 0.5;
+	}
+	.reach-bar-role {
+		background: var(--accent);
+		opacity: 0.6;
+	}
+	.reach-label {
+		font-size: 0.6rem;
+		color: var(--text-dim);
+		white-space: nowrap;
+		opacity: 0.6;
+		flex-shrink: 0;
 	}
 	.question-enter {
 		animation: slide-up 250ms ease-out both;
