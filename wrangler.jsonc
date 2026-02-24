@@ -1,11 +1,13 @@
 {
 	"name": "namea-dev",
 	"compatibility_date": "2025-01-01",
+	"compatibility_flags": ["nodejs_compat"],
+	"pages_build_output_dir": ".svelte-kit/cloudflare",
 	"d1_databases": [
 		{
 			"binding": "DB",
 			"database_name": "namea-dev-analytics",
-			"database_id": "TODO"
+			"database_id": "5e71b129-105c-44f3-b8a3-65cf07450ca9"
 		}
 	]
 }
