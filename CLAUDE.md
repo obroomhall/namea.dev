@@ -15,7 +15,12 @@ namea.dev is an interactive "Name a..." quiz that progressively tests CS knowled
 - `bun run test:watch` — watch mode
 - `bun run build && npx wrangler pages deploy` — deploy to Cloudflare Pages
 
-bun is the package manager. Wrangler requires npx (nvm is installed).
+bun is the package manager. Wrangler requires npx (nvm is installed). No node/npm installed directly.
+
+## Git Workflow
+
+- Create a feature branch, commit in small logical steps, push, and open a PR
+- User merges the PR — do not merge
 
 ## Architecture
 
