@@ -82,6 +82,22 @@
 		goto('/results');
 	}
 
+	function handleSkip() {
+		if (feedbackState) return;
+		quiz.skip();
+		feedbackState = null;
+		inputValue = '';
+		questionKey++;
+
+		const s = quizState;
+		if (s.currentIndex >= QUESTIONS.length) {
+			goto('/results');
+			return;
+		}
+
+		setTimeout(() => inputEl?.focus(), 0);
+	}
+
 	function handleJump(index: number) {
 		quiz.jumpTo(index);
 		feedbackState = null;
@@ -117,7 +133,10 @@
 								autofocus
 							/>
 						</form>
-						<div class="hint question-enter">Press Enter to submit</div>
+						<div class="input-footer question-enter">
+							<span class="hint">Press Enter to submit</span>
+							<button class="skip-btn" onclick={handleSkip}>Skip</button>
+						</div>
 					{/key}
 				{:else}
 					<Feedback
@@ -182,9 +201,27 @@
 		flex: 1;
 		justify-content: center;
 	}
+	.input-footer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
 	.hint {
 		color: var(--text-dim);
 		font-size: 0.75rem;
+	}
+	.skip-btn {
+		background: transparent;
+		border: none;
+		color: var(--text-dim);
+		font-size: 0.75rem;
+		padding: 0.25rem 0;
+		cursor: pointer;
+	}
+	.skip-btn:hover {
+		color: var(--text);
+		background: transparent;
+		transform: none;
 	}
 	.complete {
 		display: flex;

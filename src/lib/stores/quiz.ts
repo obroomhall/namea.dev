@@ -109,6 +109,33 @@ function createQuizStore() {
 			}
 		},
 
+		skip() {
+			const s = get(state);
+			const question = QUESTIONS[s.currentIndex];
+			if (!question) return;
+
+			const record: AnswerRecord = {
+				roleId: question.roleId,
+				input: '(skipped)',
+				correct: false
+			};
+
+			state.update((s) => {
+				const newAnswers = [...s.answers, record];
+				const roleLocked = true;
+				const nextIndex = s.currentIndex + 1;
+				const completed = nextIndex >= QUESTIONS.length;
+				return {
+					...s,
+					answers: newAnswers,
+					roleLocked,
+					currentIndex: nextIndex,
+					completed
+				};
+			});
+			persist();
+		},
+
 		advance() {
 			state.update((s) => {
 				const nextIndex = s.currentIndex + 1;
