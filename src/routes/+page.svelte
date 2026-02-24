@@ -4,7 +4,6 @@
 	import { quiz } from '$lib/stores/quiz';
 	import { onMount } from 'svelte';
 
-	let selectedRole = $state('');
 	let hasExistingSession = $state(false);
 
 	onMount(() => {
@@ -17,9 +16,9 @@
 		return unsub;
 	});
 
-	function start() {
-		if (!selectedRole) return;
-		quiz.start(selectedRole);
+	function start(role: string) {
+		if (!role) return;
+		quiz.start(role);
 		goto('/quiz');
 	}
 
@@ -49,13 +48,12 @@
 	{:else}
 		<div class="start-form entrance entrance-3">
 			<label for="role-select">What's your actual role?</label>
-			<select id="role-select" bind:value={selectedRole}>
-				<option value="" disabled>Pick your role...</option>
+			<select id="role-select" onchange={(e) => start(e.currentTarget.value)}>
+				<option value="" disabled selected>Pick your role...</option>
 				{#each ACTUAL_ROLES as role}
 					<option value={role}>{role}</option>
 				{/each}
 			</select>
-			<button class="primary" onclick={start} disabled={!selectedRole}>Start quiz</button>
 		</div>
 	{/if}
 </div>
