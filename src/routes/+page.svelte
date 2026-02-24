@@ -30,18 +30,15 @@
 <div class="container landing">
 	<header class="entrance entrance-1">
 		<h1><span class="accent">namea</span>.dev</h1>
-		<p class="subtitle">The quiz that determines your <em>real</em> engineering title.</p>
 	</header>
 
 	{#if hasExistingSession}
 		<div class="resume entrance entrance-2">
-			<p>You have a quiz in progress.</p>
 			<button class="primary" onclick={resumeQuiz}>Resume quiz</button>
 			<button onclick={() => { hasExistingSession = false; }}>Start fresh</button>
 		</div>
 	{:else}
 		<div class="start-form entrance entrance-2">
-			<label for="role-select">What's your actual role?</label>
 			<select id="role-select" onchange={(e) => start(e.currentTarget.value)}>
 				<option value="" disabled selected>Pick your role...</option>
 				{#each ACTUAL_ROLES as role}
@@ -73,29 +70,17 @@
 	.accent {
 		color: var(--accent);
 	}
-	.subtitle {
-		color: var(--text-dim);
-		font-size: 1rem;
-	}
 .start-form {
 		display: flex;
 		flex-direction: column;
 		gap: 0.75rem;
 	}
-	.start-form label {
-		color: var(--text-dim);
-		font-size: 0.875rem;
-	}
-	.resume {
+.resume {
 		display: flex;
 		flex-direction: column;
 		gap: 0.75rem;
 	}
-	.resume p {
-		color: var(--text-dim);
-		font-size: 0.875rem;
-	}
-	.entrance {
+.entrance {
 		animation: slide-up 250ms ease-out both;
 	}
 	.entrance-1 {
