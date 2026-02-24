@@ -17,6 +17,8 @@
 	let inputValue = $state('');
 	let inputEl: HTMLInputElement | undefined = $state();
 	let flashClass = $state('');
+	let shakeInput = $state(false);
+	let questionKey = $state(0);
 
 	onMount(() => {
 		quiz.init();
@@ -48,11 +50,13 @@
 			setTimeout(() => {
 				flashClass = '';
 				handleContinue();
-			}, 600);
+			}, 1000);
 		} else {
 			feedbackState = result;
+			shakeInput = true;
 			setTimeout(() => {
 				flashClass = '';
+				shakeInput = false;
 			}, 400);
 		}
 	}
@@ -61,6 +65,7 @@
 		quiz.advance();
 		feedbackState = null;
 		inputValue = '';
+		questionKey++;
 
 		const s = quizState;
 		if (s.currentIndex >= QUESTIONS.length) {
@@ -81,6 +86,7 @@
 		quiz.jumpTo(index);
 		feedbackState = null;
 		inputValue = '';
+		questionKey++;
 		setTimeout(() => inputEl?.focus(), 0);
 	}
 </script>
@@ -100,16 +106,19 @@
 		{:else if currentQuestion}
 			<div class="question-section">
 				{#if !feedbackState}
-					<form onsubmit={handleSubmit}>
-						<input
-							type="text"
-							bind:value={inputValue}
-							bind:this={inputEl}
-							placeholder={placeholder}
-							autofocus
-						/>
-					</form>
-					<div class="hint">Press Enter to submit</div>
+					{#key questionKey}
+						<form onsubmit={handleSubmit} class="question-enter">
+							<input
+								type="text"
+								bind:value={inputValue}
+								bind:this={inputEl}
+								placeholder={placeholder}
+								class:shake={shakeInput}
+								autofocus
+							/>
+						</form>
+						<div class="hint question-enter">Press Enter to submit</div>
+					{/key}
 				{:else}
 					<Feedback
 						correct={feedbackState.correct}
@@ -188,5 +197,11 @@
 	.complete p {
 		font-size: 1.25rem;
 		color: var(--text-bright);
+	}
+	.question-enter {
+		animation: slide-up 250ms ease-out both;
+	}
+	.shake {
+		animation: shake 300ms ease-out;
 	}
 </style>
