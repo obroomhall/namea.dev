@@ -5,12 +5,16 @@
 	let {
 		achievedRoleId,
 		currentIndex,
+		answeredCount = 0,
 		roleLocked = false,
+		actualRole,
 		onjump
 	}: {
 		achievedRoleId: string | null;
 		currentIndex: number;
+		answeredCount?: number;
 		roleLocked?: boolean;
+		actualRole?: string;
 		onjump?: (index: number) => void;
 	} = $props();
 
@@ -20,15 +24,21 @@
 	);
 
 	function getNodeState(i: number): 'achieved' | 'failed' | 'current' | 'future' {
-		if (i < currentIndex) {
+		if (i === currentIndex) return 'current';
+		if (i < answeredCount) {
 			return i <= achievedIndex ? 'achieved' : 'failed';
 		}
-		if (i === currentIndex) return 'current';
 		return 'future';
 	}
 
 	function isClickable(i: number): boolean {
-		return roleLocked && i > currentIndex && !!onjump;
+		if (!onjump || i === currentIndex) return false;
+		// Already-answered questions are always navigable
+		if (i < answeredCount) return true;
+		// The frontier (next unanswered) is always navigable
+		if (i === answeredCount) return true;
+		// Unanswered future questions only when role is locked
+		return roleLocked && i > answeredCount;
 	}
 
 	function handleClick(i: number) {
@@ -43,41 +53,61 @@
 	}
 </script>
 
-<div class="progress-bar">
-	{#each QUESTIONS as q, i}
-		{@const state = getNodeState(i)}
-		{@const clickable = isClickable(i)}
-		{#if i > 0}
-			<div class="connector" class:achieved={i <= achievedIndex && i <= currentIndex}></div>
+<div class="progress-wrapper">
+	<div class="labels">
+		<span class="label-current">{getRoleLabel(QUESTIONS[currentIndex]?.roleId)}</span>
+		{#if actualRole}
+			<span class="label-claimed">{actualRole}</span>
 		{/if}
-		<button
-			class="node {state}"
-			class:clickable
-			class:active={i === currentIndex}
-			title={getRoleLabel(q.roleId)}
-			disabled={!clickable}
-			onclick={() => handleClick(i)}
-			onkeydown={(e) => handleKeydown(e, i)}
-		>
-			{#if i === currentIndex}
-				<span
-					class="current-label"
-					class:align-start={i === 0}
-					class:align-end={i === QUESTIONS.length - 1}
-				>{getRoleLabel(q.roleId)}</span>
+	</div>
+	<div class="progress-bar">
+		{#each QUESTIONS as q, i}
+			{@const state = getNodeState(i)}
+			{@const clickable = isClickable(i)}
+			{#if i > 0}
+				<div class="connector" class:achieved={i <= achievedIndex && i < answeredCount}></div>
 			{/if}
-		</button>
-	{/each}
+			<button
+				class="node {state}"
+				class:clickable
+				class:active={i === currentIndex}
+				class:frontier={i === answeredCount && currentIndex !== answeredCount && i < QUESTIONS.length}
+				title={getRoleLabel(q.roleId)}
+				disabled={!clickable}
+				onclick={() => handleClick(i)}
+				onkeydown={(e) => handleKeydown(e, i)}
+			></button>
+		{/each}
+	</div>
 </div>
 
 <style>
+	.progress-wrapper {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+	.labels {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+	}
+	.label-current {
+		font-size: 0.875rem;
+		font-weight: 600;
+		color: var(--text);
+	}
+	.label-claimed {
+		font-size: 0.75rem;
+		color: var(--text-dim);
+	}
 	.progress-bar {
 		display: flex;
 		align-items: center;
 		gap: 0;
 		width: 100%;
 		overflow: visible;
-		padding: 1.25rem 0 0.25rem;
+		padding: 0;
 	}
 	.connector {
 		flex: 1;
@@ -124,6 +154,15 @@
 		border-color: var(--accent);
 		animation: pulse-glow 2s ease-in-out infinite;
 	}
+	.node.frontier {
+		border-color: var(--accent);
+		opacity: 0.7;
+		animation: pulse-glow 2s ease-in-out infinite;
+		cursor: pointer;
+	}
+	.node.frontier:hover {
+		opacity: 1;
+	}
 	.node.future {
 		opacity: 0.4;
 	}
@@ -134,25 +173,5 @@
 	.node.clickable:hover {
 		opacity: 1;
 		border-color: var(--text-dim);
-	}
-	.current-label {
-		position: absolute;
-		bottom: calc(100% + 6px);
-		left: 50%;
-		transform: translateX(-50%);
-		white-space: nowrap;
-		font-size: 0.7rem;
-		color: var(--text);
-		font-weight: 600;
-		pointer-events: none;
-	}
-	.current-label.align-start {
-		left: 0;
-		transform: none;
-	}
-	.current-label.align-end {
-		left: auto;
-		right: 0;
-		transform: none;
 	}
 </style>

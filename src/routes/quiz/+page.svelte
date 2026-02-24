@@ -36,6 +36,12 @@
 		currentQuestion?.prompt.replace(/^Name an? /i, '').replace(/\.$/, '')
 	);
 	const isComplete = $derived(quizState.completed || quizState.currentIndex >= QUESTIONS.length);
+	const isReviewing = $derived(
+		quizState.answers && quizState.currentIndex < quizState.answers.length
+	);
+	const reviewAnswer = $derived(
+		isReviewing ? quizState.answers[quizState.currentIndex] : null
+	);
 
 	function handleSubmit(e: Event) {
 		e.preventDefault();
@@ -111,7 +117,6 @@
 	<div class="container quiz-page {flashClass}">
 		<div class="quiz-header">
 			<h1><span class="accent">Name a</span>...</h1>
-			<span class="claimed">claimed: {quizState.actualRole}</span>
 		</div>
 
 		{#if isComplete}
@@ -121,7 +126,20 @@
 			</div>
 		{:else if currentQuestion}
 			<div class="question-section">
-				{#if !feedbackState}
+				{#if isReviewing && reviewAnswer}
+					{#key questionKey}
+						<div class="review question-enter" class:correct={reviewAnswer.correct} class:wrong={!reviewAnswer.correct}>
+							<div class="review-status" class:correct-text={reviewAnswer.correct} class:wrong-text={!reviewAnswer.correct}>
+								{reviewAnswer.correct ? '✓' : '✗'}
+							</div>
+							<div class="review-answer">{reviewAnswer.input}</div>
+							{#if reviewAnswer.correct && reviewAnswer.canonical}
+								<div class="review-canonical">{reviewAnswer.canonical}</div>
+							{/if}
+						</div>
+					{/key}
+					<div class="hint">Click a question in the progress bar to navigate</div>
+				{:else if !feedbackState}
 					{#key questionKey}
 						<form onsubmit={handleSubmit} class="question-enter">
 							<input
@@ -156,7 +174,9 @@
 			<RoleDisplay
 				achievedRoleId={quizState.achievedRoleId}
 				currentIndex={quizState.currentIndex}
+				answeredCount={quizState.answers?.length ?? 0}
 				roleLocked={quizState.roleLocked}
+				actualRole={quizState.actualRole}
 				onjump={handleJump}
 			/>
 		</div>
@@ -169,7 +189,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 2rem;
-		padding-top: 3rem;
+		padding-top: 4rem;
 	}
 	.quiz-header {
 		display: flex;
@@ -186,13 +206,9 @@
 	.accent {
 		color: var(--accent);
 	}
-	.claimed {
-		color: var(--text-dim);
-		font-size: 0.75rem;
-	}
 	.quiz-footer {
 		margin-top: auto;
-		padding-bottom: 1rem;
+		padding-bottom: 2rem;
 	}
 	.question-section {
 		display: flex;
@@ -234,6 +250,36 @@
 	.complete p {
 		font-size: 1.25rem;
 		color: var(--text-bright);
+	}
+	.review {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		padding: 1.5rem;
+		border: 1px solid var(--border);
+	}
+	.review.correct {
+		border-color: var(--accent);
+	}
+	.review.wrong {
+		border-color: var(--error);
+	}
+	.review-status {
+		font-size: 1.25rem;
+		font-weight: 700;
+	}
+	.correct-text {
+		color: var(--accent);
+	}
+	.wrong-text {
+		color: var(--error);
+	}
+	.review-answer {
+		color: var(--text);
+	}
+	.review-canonical {
+		color: var(--text-dim);
+		font-size: 0.875rem;
 	}
 	.question-enter {
 		animation: slide-up 250ms ease-out both;
