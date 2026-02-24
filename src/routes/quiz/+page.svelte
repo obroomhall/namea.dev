@@ -170,7 +170,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 2rem;
-		padding-top: 3rem;
+		padding-top: 4rem;
 	}
 	.quiz-header {
 		display: flex;
@@ -189,7 +189,7 @@
 	}
 	.quiz-footer {
 		margin-top: auto;
-		padding-bottom: 1rem;
+		padding-bottom: 2rem;
 	}
 	.question-section {
 		display: flex;
