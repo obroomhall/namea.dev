@@ -277,7 +277,7 @@ export const QUESTIONS: Question[] = [
 	},
 	{
 		roleId: 'cpu',
-		prompt: 'Name a valid UUID (any version — I\'ll check the format).',
+		prompt: 'Name a valid UUID.',
 		answers: [
 			// This is a special question — any valid UUID format is accepted
 			// We handle this via a custom validator, not the accept list
