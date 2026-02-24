@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	let {
 		correct,
 		canonical,
@@ -16,6 +18,18 @@
 		oncontinue: () => void;
 		onresults: () => void;
 	} = $props();
+
+	function handleKeydown(e: KeyboardEvent) {
+		if (e.key === 'Enter') {
+			e.preventDefault();
+			oncontinue();
+		}
+	}
+
+	onMount(() => {
+		window.addEventListener('keydown', handleKeydown);
+		return () => window.removeEventListener('keydown', handleKeydown);
+	});
 </script>
 
 <div class="feedback" class:correct class:wrong={!correct}>
@@ -33,11 +47,8 @@
 		{#if docsUrl}
 			<div class="docs"><a href={docsUrl} target="_blank" rel="noopener">Learn more</a></div>
 		{/if}
+		<div class="hint">Press Enter to continue</div>
 	{/if}
-	<div class="actions">
-		<button onclick={oncontinue}>Next question</button>
-		<button onclick={onresults}>See results</button>
-	</div>
 </div>
 
 <style>
@@ -77,9 +88,9 @@
 	.docs {
 		font-size: 0.875rem;
 	}
-	.actions {
-		display: flex;
-		gap: 0.75rem;
-		margin-top: 0.5rem;
+	.hint {
+		color: var(--text-dim);
+		font-size: 0.75rem;
+		margin-top: 0.25rem;
 	}
 </style>

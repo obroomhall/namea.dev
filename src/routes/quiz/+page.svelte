@@ -38,11 +38,21 @@
 		if (!inputValue.trim() || feedbackState) return;
 
 		const result = quiz.submitAnswer(inputValue);
-		feedbackState = result;
 		flashClass = result.correct ? 'flash-correct' : 'flash-wrong';
-		setTimeout(() => {
-			flashClass = '';
-		}, 400);
+
+		if (result.correct) {
+			// Brief flash then auto-advance
+			feedbackState = { correct: true, canonical: result.canonical };
+			setTimeout(() => {
+				flashClass = '';
+				handleContinue();
+			}, 600);
+		} else {
+			feedbackState = result;
+			setTimeout(() => {
+				flashClass = '';
+			}, 400);
+		}
 	}
 
 	function handleContinue() {
