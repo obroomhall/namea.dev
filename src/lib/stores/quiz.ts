@@ -118,6 +118,13 @@ function createQuizStore() {
 			persist();
 		},
 
+		jumpTo(index: number) {
+			const s = get(state);
+			if (!s.roleLocked || index <= s.currentIndex || index >= QUESTIONS.length) return;
+			state.update((s) => ({ ...s, currentIndex: index }));
+			persist();
+		},
+
 		markComplete() {
 			state.update((s) => ({ ...s, completed: true }));
 			persist();

@@ -3,7 +3,6 @@
 	import { onMount } from 'svelte';
 	import { quiz } from '$lib/stores/quiz';
 	import { QUESTIONS } from '$lib/data/questions';
-	import { ROLES } from '$lib/engine/roles';
 	import RoleDisplay from '$lib/components/RoleDisplay.svelte';
 	import Feedback from '$lib/components/Feedback.svelte';
 
@@ -74,13 +73,25 @@
 		quiz.markComplete();
 		goto('/results');
 	}
+
+	function handleJump(index: number) {
+		quiz.jumpTo(index);
+		feedbackState = null;
+		inputValue = '';
+		setTimeout(() => inputEl?.focus(), 0);
+	}
 </script>
 
 {#if quizState.actualRole}
 	<div class="container quiz-page {flashClass}">
 		<div class="quiz-header">
-			<RoleDisplay roleId={quizState.achievedRoleId} locked={quizState.roleLocked} />
 			<span class="claimed">claimed: {quizState.actualRole}</span>
+			<RoleDisplay
+				achievedRoleId={quizState.achievedRoleId}
+				currentIndex={quizState.currentIndex}
+				roleLocked={quizState.roleLocked}
+				onjump={handleJump}
+			/>
 		</div>
 
 		{#if isComplete}

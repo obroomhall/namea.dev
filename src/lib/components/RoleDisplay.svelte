@@ -1,40 +1,134 @@
 <script lang="ts">
+	import { QUESTIONS } from '$lib/data/questions';
 	import { getRoleLabel } from '$lib/engine/roles';
 
-	let { roleId, locked = false }: { roleId: string | null; locked?: boolean } = $props();
+	let {
+		achievedRoleId,
+		currentIndex,
+		roleLocked = false,
+		onjump
+	}: {
+		achievedRoleId: string | null;
+		currentIndex: number;
+		roleLocked?: boolean;
+		onjump?: (index: number) => void;
+	} = $props();
+
+	// Find the index of the achieved role (last correct answer)
+	const achievedIndex = $derived(
+		achievedRoleId ? QUESTIONS.findIndex((q) => q.roleId === achievedRoleId) : -1
+	);
+
+	function getNodeState(i: number): 'achieved' | 'failed' | 'current' | 'future' {
+		if (i < currentIndex) {
+			return i <= achievedIndex ? 'achieved' : 'failed';
+		}
+		if (i === currentIndex) return 'current';
+		return 'future';
+	}
+
+	function isClickable(i: number): boolean {
+		return roleLocked && i > currentIndex && !!onjump;
+	}
+
+	function handleClick(i: number) {
+		if (isClickable(i)) onjump?.(i);
+	}
+
+	function handleKeydown(e: KeyboardEvent, i: number) {
+		if ((e.key === 'Enter' || e.key === ' ') && isClickable(i)) {
+			e.preventDefault();
+			onjump?.(i);
+		}
+	}
 </script>
 
-<div class="role-display">
-	<span class="label">Current role:</span>
-	<span class="role" class:locked>
-		{roleId ? getRoleLabel(roleId) : 'None'}
-	</span>
-	{#if locked}
-		<span class="lock">locked</span>
-	{/if}
+<div class="progress-bar">
+	{#each QUESTIONS as q, i}
+		{@const state = getNodeState(i)}
+		{@const clickable = isClickable(i)}
+		{#if i > 0}
+			<div class="connector" class:achieved={i <= achievedIndex && i <= currentIndex}></div>
+		{/if}
+		<button
+			class="node {state}"
+			class:clickable
+			class:active={i === currentIndex}
+			title={getRoleLabel(q.roleId)}
+			disabled={!clickable}
+			onclick={() => handleClick(i)}
+			onkeydown={(e) => handleKeydown(e, i)}
+		>
+			{#if i === currentIndex}
+				<span class="current-label">{getRoleLabel(q.roleId)}</span>
+			{/if}
+		</button>
+	{/each}
 </div>
 
 <style>
-	.role-display {
+	.progress-bar {
 		display: flex;
 		align-items: center;
-		gap: 0.5rem;
-		font-size: 0.875rem;
+		gap: 0;
+		width: 100%;
+		overflow-x: auto;
+		padding: 1.25rem 0 0.25rem;
 	}
-	.label {
-		color: var(--text-dim);
+	.connector {
+		flex: 1;
+		height: 2px;
+		min-width: 0.5rem;
+		background: var(--border);
 	}
-	.role {
-		color: var(--accent);
+	.connector.achieved {
+		background: var(--accent);
+	}
+	.node {
+		position: relative;
+		width: 12px;
+		height: 12px;
+		border-radius: 50%;
+		border: 2px solid var(--border);
+		background: transparent;
+		padding: 0;
+		flex-shrink: 0;
+		cursor: default;
+		font-family: inherit;
+		transition: border-color 0.15s, background 0.15s;
+	}
+	.node.achieved {
+		background: var(--accent);
+		border-color: var(--accent);
+	}
+	.node.failed {
+		background: var(--error);
+		border-color: var(--error);
+	}
+	.node.current {
+		border-color: var(--accent);
+		box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent);
+	}
+	.node.future {
+		opacity: 0.4;
+	}
+	.node.clickable {
+		cursor: pointer;
+		opacity: 0.6;
+	}
+	.node.clickable:hover {
+		opacity: 1;
+		border-color: var(--text-dim);
+	}
+	.current-label {
+		position: absolute;
+		bottom: calc(100% + 6px);
+		left: 50%;
+		transform: translateX(-50%);
+		white-space: nowrap;
+		font-size: 0.7rem;
+		color: var(--text);
 		font-weight: 600;
-	}
-	.role.locked {
-		color: var(--error);
-	}
-	.lock {
-		color: var(--text-dim);
-		font-size: 0.75rem;
-		border: 1px solid var(--border);
-		padding: 0.1rem 0.3rem;
+		pointer-events: none;
 	}
 </style>

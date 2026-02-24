@@ -47,7 +47,11 @@
 		{#if docsUrl}
 			<div class="docs"><a href={docsUrl} target="_blank" rel="noopener">Learn more</a></div>
 		{/if}
-		<div class="hint">Press Enter to continue</div>
+		<div class="actions">
+			<button class="btn btn-continue" onclick={oncontinue}>Next question</button>
+			<button class="btn btn-skip" onclick={onresults}>Skip to results</button>
+		</div>
+		<div class="hint">Enter = next question</div>
 	{/if}
 </div>
 
@@ -87,6 +91,30 @@
 	}
 	.docs {
 		font-size: 0.875rem;
+	}
+	.actions {
+		display: flex;
+		gap: 0.75rem;
+		margin-top: 0.25rem;
+	}
+	.btn {
+		padding: 0.4rem 0.8rem;
+		font-size: 0.8rem;
+		font-family: inherit;
+		border: 1px solid var(--border);
+		background: transparent;
+		color: var(--text);
+		cursor: pointer;
+	}
+	.btn:hover {
+		border-color: var(--text-dim);
+	}
+	.btn-continue {
+		border-color: var(--accent);
+		color: var(--accent);
+	}
+	.btn-skip {
+		color: var(--text-dim);
 	}
 	.hint {
 		color: var(--text-dim);
