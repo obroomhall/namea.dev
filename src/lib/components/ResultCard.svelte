@@ -25,7 +25,7 @@
 	const correctCount = $derived(answers.filter((a) => a.correct).length);
 	const achievedLabel = $derived(achievedRoleId ? getRoleLabel(achievedRoleId) : 'Nothing');
 	const achievedIndex = $derived(ROLES.findIndex((r) => r.id === achievedRoleId));
-	const commentary = $derived(getCommentary(actualRole, achievedRoleId, correctCount, answers.length));
+	const commentary = $derived(getCommentary(actualRole, achievedRoleId, correctCount, QUESTIONS.length));
 </script>
 
 <div class="result-card">
@@ -45,7 +45,7 @@
 		</div>
 	</div>
 
-	<div class="score">{correctCount} / {answers.length} correct</div>
+	<div class="score">{correctCount} / {QUESTIONS.length} correct</div>
 
 	<p class="commentary">{commentary}</p>
 
