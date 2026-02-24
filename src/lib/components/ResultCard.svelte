@@ -1,22 +1,27 @@
 <script lang="ts">
 	import { getRoleLabel, ROLES } from '$lib/engine/roles';
+	import { QUESTIONS } from '$lib/data/questions';
 	import type { AnswerRecord } from '$lib/stores/quiz';
+	import type { QuestionReachStats } from '$lib/utils/reach';
 	import { getCommentary } from '$lib/utils/commentary';
 
 	let {
 		actualRole,
 		achievedRoleId,
 		answers,
+		questionStats,
 		onrestart,
 		onshare
 	}: {
 		actualRole: string;
 		achievedRoleId: string | null;
 		answers: AnswerRecord[];
+		questionStats?: QuestionReachStats[];
 		onrestart: () => void;
 		onshare: () => void;
 	} = $props();
 
+	const answerByRoleId = $derived(new Map(answers.map((a) => [a.roleId, a])));
 	const correctCount = $derived(answers.filter((a) => a.correct).length);
 	const achievedLabel = $derived(achievedRoleId ? getRoleLabel(achievedRoleId) : 'Nothing');
 	const achievedIndex = $derived(ROLES.findIndex((r) => r.id === achievedRoleId));
@@ -45,21 +50,59 @@
 	<p class="commentary">{commentary}</p>
 
 	<div class="answer-list">
-		{#each answers as answer, i}
-			<div
-				class="answer-row"
-				class:correct={answer.correct}
-				class:wrong={!answer.correct}
-				style="animation-delay: {i * 40}ms"
-			>
-				<span class="answer-index">{i + 1}.</span>
-				<span class="answer-role">{getRoleLabel(answer.roleId)}</span>
-				<span class="answer-input">{answer.input}</span>
-				<span class="answer-status">{answer.correct ? '✓' : '✗'}</span>
-				{#if answer.correct && answer.canonical}
-					<span class="answer-canonical">{answer.canonical}</span>
-				{/if}
-			</div>
+		{#each QUESTIONS as question, i}
+			{@const answer = answerByRoleId.get(question.roleId)}
+			{#if answer && answer.correct}
+				<div
+					class="answer-row correct"
+					style="animation-delay: {i * 40}ms"
+				>
+					<span class="answer-index">{i + 1}.</span>
+					<span class="answer-role">{getRoleLabel(answer.roleId)}</span>
+					<span class="answer-input">{answer.input}</span>
+					<span class="answer-status">✓</span>
+					{#if answer.canonical}
+						<span class="answer-canonical">{answer.canonical}</span>
+					{/if}
+				</div>
+			{:else if answer && !answer.correct && answer.input !== '(skipped)'}
+				<div
+					class="answer-row wrong"
+					style="animation-delay: {i * 40}ms"
+				>
+					<span class="answer-index">{i + 1}.</span>
+					<span class="answer-role">{getRoleLabel(answer.roleId)}</span>
+					<span class="answer-input">{answer.input}</span>
+					<span class="answer-status">✗</span>
+				</div>
+			{:else}
+				<div
+					class="answer-row unanswered"
+					style="animation-delay: {i * 40}ms"
+				>
+					<span class="answer-index">{i + 1}.</span>
+					<span class="answer-role">{getRoleLabel(question.roleId)}</span>
+					<span class="answer-input unanswered-prompt">{question.prompt}</span>
+				</div>
+			{/if}
+			{#if questionStats?.[i]}
+				<div class="reach-stats" style="animation-delay: {i * 40}ms">
+					<div class="reach-row">
+						<div class="reach-track">
+							<div class="reach-bar reach-bar-all" style="width: {questionStats[i].allPercent}%"></div>
+						</div>
+						<span class="reach-label">{questionStats[i].allPercent}% of all</span>
+					</div>
+					{#if questionStats[i].rolePercent != null}
+						<div class="reach-row">
+							<div class="reach-track">
+								<div class="reach-bar reach-bar-role" style="width: {questionStats[i].rolePercent}%"></div>
+							</div>
+							<span class="reach-label">{questionStats[i].rolePercent}% of {actualRole}s</span>
+						</div>
+					{/if}
+				</div>
+			{/if}
 		{/each}
 	</div>
 
@@ -169,6 +212,52 @@
 	.answer-canonical {
 		color: var(--text-dim);
 		font-size: 0.75rem;
+	}
+	.answer-row.unanswered {
+		opacity: 0.4;
+	}
+	.unanswered-prompt {
+		font-style: italic;
+	}
+	.reach-stats {
+		display: flex;
+		flex-direction: column;
+		gap: 3px;
+		padding: 0 0.5rem 0.35rem 2rem;
+		animation: slide-up 250ms ease-out both;
+	}
+	.reach-row {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+	.reach-track {
+		flex: 1;
+		height: 3px;
+		background: var(--border);
+		border-radius: 1px;
+		overflow: hidden;
+	}
+	.reach-bar {
+		height: 100%;
+		border-radius: 1px;
+		min-width: 1px;
+		transition: width 600ms ease-out;
+	}
+	.reach-bar-all {
+		background: var(--text-dim);
+		opacity: 0.5;
+	}
+	.reach-bar-role {
+		background: var(--accent);
+		opacity: 0.6;
+	}
+	.reach-label {
+		font-size: 0.6rem;
+		color: var(--text-dim);
+		white-space: nowrap;
+		opacity: 0.6;
+		flex-shrink: 0;
 	}
 	.actions {
 		display: flex;
