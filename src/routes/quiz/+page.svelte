@@ -101,7 +101,6 @@
 	<div class="container quiz-page {flashClass}">
 		<div class="quiz-header">
 			<h1><span class="accent">Name a</span>...</h1>
-			<span class="claimed">claimed: {quizState.actualRole}</span>
 		</div>
 
 		{#if isComplete}
@@ -158,6 +157,7 @@
 				currentIndex={quizState.currentIndex}
 				answeredCount={quizState.answers?.length ?? 0}
 				roleLocked={quizState.roleLocked}
+				actualRole={quizState.actualRole}
 				onjump={handleJump}
 			/>
 		</div>
@@ -186,10 +186,6 @@
 	}
 	.accent {
 		color: var(--accent);
-	}
-	.claimed {
-		color: var(--text-dim);
-		font-size: 0.75rem;
 	}
 	.quiz-footer {
 		margin-top: auto;

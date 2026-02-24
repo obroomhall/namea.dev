@@ -7,12 +7,14 @@
 		currentIndex,
 		answeredCount = 0,
 		roleLocked = false,
+		actualRole,
 		onjump
 	}: {
 		achievedRoleId: string | null;
 		currentIndex: number;
 		answeredCount?: number;
 		roleLocked?: boolean;
+		actualRole?: string;
 		onjump?: (index: number) => void;
 	} = $props();
 
@@ -52,7 +54,12 @@
 </script>
 
 <div class="progress-wrapper">
-	<div class="current-label">{getRoleLabel(QUESTIONS[currentIndex]?.roleId)}</div>
+	<div class="labels">
+		<span class="label-current">{getRoleLabel(QUESTIONS[currentIndex]?.roleId)}</span>
+		{#if actualRole}
+			<span class="label-claimed">{actualRole}</span>
+		{/if}
+	</div>
 	<div class="progress-bar">
 		{#each QUESTIONS as q, i}
 			{@const state = getNodeState(i)}
@@ -78,14 +85,21 @@
 	.progress-wrapper {
 		display: flex;
 		flex-direction: column;
-		align-items: center;
-		gap: 0.75rem;
+		gap: 0.5rem;
 	}
-	.current-label {
-		font-size: 1rem;
+	.labels {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+	}
+	.label-current {
+		font-size: 0.875rem;
 		font-weight: 600;
 		color: var(--text);
-		text-align: center;
+	}
+	.label-claimed {
+		font-size: 0.75rem;
+		color: var(--text-dim);
 	}
 	.progress-bar {
 		display: flex;
