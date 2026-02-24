@@ -28,7 +28,11 @@
 	}
 
 	function isClickable(i: number): boolean {
-		return roleLocked && i > currentIndex && !!onjump;
+		if (!onjump || i === currentIndex) return false;
+		// Already-answered questions are always navigable
+		if (i < currentIndex) return true;
+		// Future questions only when role is locked
+		return roleLocked && i > currentIndex;
 	}
 
 	function handleClick(i: number) {

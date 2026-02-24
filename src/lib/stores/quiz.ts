@@ -120,7 +120,10 @@ function createQuizStore() {
 
 		jumpTo(index: number) {
 			const s = get(state);
-			if (!s.roleLocked || index <= s.currentIndex || index >= QUESTIONS.length) return;
+			if (index === s.currentIndex || index < 0 || index >= QUESTIONS.length) return;
+			// Can only jump backward to answered questions, or forward when role is locked
+			if (index < s.currentIndex && index >= s.answers.length) return;
+			if (index > s.currentIndex && !s.roleLocked) return;
 			state.update((s) => ({ ...s, currentIndex: index }));
 			persist();
 		},
