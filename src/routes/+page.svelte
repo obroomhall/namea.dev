@@ -33,20 +33,14 @@
 		<p class="subtitle">The quiz that determines your <em>real</em> engineering title.</p>
 	</header>
 
-	<div class="description entrance entrance-2">
-		<p>Each question starts with <strong>"Name a..."</strong></p>
-		<p>Get it right, you advance. Get it wrong, your role is locked forever.</p>
-		<p>Questions get increasingly absurd. Good luck.</p>
-	</div>
-
 	{#if hasExistingSession}
-		<div class="resume entrance entrance-3">
+		<div class="resume entrance entrance-2">
 			<p>You have a quiz in progress.</p>
 			<button class="primary" onclick={resumeQuiz}>Resume quiz</button>
 			<button onclick={() => { hasExistingSession = false; }}>Start fresh</button>
 		</div>
 	{:else}
-		<div class="start-form entrance entrance-3">
+		<div class="start-form entrance entrance-2">
 			<label for="role-select">What's your actual role?</label>
 			<select id="role-select" onchange={(e) => start(e.currentTarget.value)}>
 				<option value="" disabled selected>Pick your role...</option>
@@ -83,17 +77,7 @@
 		color: var(--text-dim);
 		font-size: 1rem;
 	}
-	.description {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-		color: var(--text);
-		font-size: 0.875rem;
-	}
-	.description strong {
-		color: var(--text-bright);
-	}
-	.start-form {
+.start-form {
 		display: flex;
 		flex-direction: column;
 		gap: 0.75rem;
@@ -119,8 +103,5 @@
 	}
 	.entrance-2 {
 		animation-delay: 80ms;
-	}
-	.entrance-3 {
-		animation-delay: 160ms;
 	}
 </style>
