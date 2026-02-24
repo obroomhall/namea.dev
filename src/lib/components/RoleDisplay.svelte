@@ -62,6 +62,7 @@
 			class="node {state}"
 			class:clickable
 			class:active={i === currentIndex}
+			class:frontier={i === answeredCount && currentIndex !== answeredCount && i < QUESTIONS.length}
 			title={getRoleLabel(q.roleId)}
 			disabled={!clickable}
 			onclick={() => handleClick(i)}
@@ -131,6 +132,15 @@
 	.node.current {
 		border-color: var(--accent);
 		animation: pulse-glow 2s ease-in-out infinite;
+	}
+	.node.frontier {
+		border-color: var(--accent);
+		opacity: 0.7;
+		animation: pulse-glow 2s ease-in-out infinite;
+		cursor: pointer;
+	}
+	.node.frontier:hover {
+		opacity: 1;
 	}
 	.node.future {
 		opacity: 0.4;
