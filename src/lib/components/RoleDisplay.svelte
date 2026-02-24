@@ -5,11 +5,13 @@
 	let {
 		achievedRoleId,
 		currentIndex,
+		answeredCount = 0,
 		roleLocked = false,
 		onjump
 	}: {
 		achievedRoleId: string | null;
 		currentIndex: number;
+		answeredCount?: number;
 		roleLocked?: boolean;
 		onjump?: (index: number) => void;
 	} = $props();
@@ -20,19 +22,21 @@
 	);
 
 	function getNodeState(i: number): 'achieved' | 'failed' | 'current' | 'future' {
-		if (i < currentIndex) {
+		if (i === currentIndex) return 'current';
+		if (i < answeredCount) {
 			return i <= achievedIndex ? 'achieved' : 'failed';
 		}
-		if (i === currentIndex) return 'current';
 		return 'future';
 	}
 
 	function isClickable(i: number): boolean {
 		if (!onjump || i === currentIndex) return false;
 		// Already-answered questions are always navigable
-		if (i < currentIndex) return true;
-		// Future questions only when role is locked
-		return roleLocked && i > currentIndex;
+		if (i < answeredCount) return true;
+		// The frontier (next unanswered) is always navigable
+		if (i === answeredCount) return true;
+		// Unanswered future questions only when role is locked
+		return roleLocked && i > answeredCount;
 	}
 
 	function handleClick(i: number) {
@@ -52,7 +56,7 @@
 		{@const state = getNodeState(i)}
 		{@const clickable = isClickable(i)}
 		{#if i > 0}
-			<div class="connector" class:achieved={i <= achievedIndex && i <= currentIndex}></div>
+			<div class="connector" class:achieved={i <= achievedIndex && i < answeredCount}></div>
 		{/if}
 		<button
 			class="node {state}"

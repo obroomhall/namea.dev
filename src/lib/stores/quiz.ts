@@ -121,11 +121,17 @@ function createQuizStore() {
 		jumpTo(index: number) {
 			const s = get(state);
 			if (index === s.currentIndex || index < 0 || index >= QUESTIONS.length) return;
-			// Can only jump backward to answered questions, or forward when role is locked
-			if (index < s.currentIndex && index >= s.answers.length) return;
-			if (index > s.currentIndex && !s.roleLocked) return;
-			state.update((s) => ({ ...s, currentIndex: index }));
-			persist();
+			// Can jump to any answered question or the frontier (next unanswered)
+			if (index <= s.answers.length) {
+				state.update((s) => ({ ...s, currentIndex: index }));
+				persist();
+				return;
+			}
+			// Beyond the frontier only when role is locked (skip ahead)
+			if (s.roleLocked) {
+				state.update((s) => ({ ...s, currentIndex: index }));
+				persist();
+			}
 		},
 
 		markComplete() {
