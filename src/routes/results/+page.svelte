@@ -96,7 +96,7 @@
 			r: s.achievedRoleId ?? 'none',
 			a: s.actualRole,
 			c: String(correctCount),
-			t: String(s.answers.length)
+			t: String(QUESTIONS.length)
 		});
 		const url = `${window.location.origin}/results?${params}`;
 		navigator.clipboard.writeText(url).catch(() => {
