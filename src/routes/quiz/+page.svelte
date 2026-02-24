@@ -190,6 +190,10 @@
 						onresults={goToResults}
 					/>
 				{/if}
+			</div>
+		{/if}
+
+		<div class="quiz-footer">
 			{#if currentReach}
 				<div class="reach-hint">
 					<div class="reach-row">
@@ -208,10 +212,6 @@
 					{/if}
 				</div>
 			{/if}
-			</div>
-		{/if}
-
-		<div class="quiz-footer">
 			<RoleDisplay
 				achievedRoleId={quizState.achievedRoleId}
 				currentIndex={quizState.currentIndex}
