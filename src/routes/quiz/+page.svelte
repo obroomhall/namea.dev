@@ -165,7 +165,7 @@
 						{#if currentQuestion.docsUrl}
 							<a class="docs-link" href={currentQuestion.docsUrl} target="_blank" rel="noopener">Learn more</a>
 						{/if}
-						<button class="next-btn" onclick={() => handleJump(quizState.currentIndex + 1)}>Next →</button>
+						<button class="next-btn" onclick={() => handleJump(quizState.currentIndex + 1)}>Next</button>
 					</div>
 				{:else if !feedbackState}
 					{#key questionKey}
