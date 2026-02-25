@@ -39,6 +39,7 @@ export interface Branding {
 	titleSuffix: string;
 	description: string;
 	promptPrefix: string;
+	repoUrl?: string;
 }
 
 export interface QuizConfig {

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-namea.dev is an interactive "Name a..." quiz that progressively tests CS knowledge, built with SvelteKit 5 (Svelte 5 runes) and deployed on Cloudflare Pages with a D1 analytics database.
+namea.dev is an interactive progressive quiz app built with SvelteKit 5 (Svelte 5 runes) and deployed on Cloudflare Pages with a D1 analytics database. All quiz content (roles, questions, answers, branding, commentary) is defined in a single JSON config file, making the app reusable for any topic.
 
 ## Commands
 
@@ -26,12 +26,16 @@ bun is the package manager. Wrangler requires npx (nvm is installed). No node/np
 
 **Quiz flow:** Landing (`/`) → Quiz (`/quiz`) → Results (`/results`)
 
+**Configuration:**
+- `src/lib/data/quiz-config.json` — Single source of truth for all quiz content: branding, roles, questions with answers, and commentary templates.
+- `src/lib/data/config.ts` — Typed config loader. Exports `config: QuizConfig` and all related interfaces (`Question`, `Role`, `Branding`, `Commentary`, etc.).
+
 **Key layers:**
 - `src/lib/stores/quiz.ts` — Central quiz state store with methods (init, start, submitAnswer, advance, restart). Persists to localStorage.
-- `src/lib/engine/matcher.ts` — Answer validation. Standard questions use fuzzy matching with accept lists. Special cases: UUID format validation and Brainfuck syntax validation.
-- `src/lib/engine/roles.ts` — Role progression system. Real roles (Student→Principal) and absurd roles (Mass, CPU, /dev/null) unlocked by answering harder questions correctly.
-- `src/lib/data/questions.ts` — 13 progressive questions, each tied to a role_id.
-- `src/lib/utils/commentary.ts` — Generates result commentary based on actual vs. achieved role.
+- `src/lib/engine/matcher.ts` — Answer validation. Standard questions use fuzzy matching with accept lists. Questions with a `validator` field use named validators (e.g. `uuid`, `brainfuck`).
+- `src/lib/engine/roles.ts` — Role progression system sourced from config. Real roles and absurd roles unlocked by answering harder questions correctly.
+- `src/lib/data/questions.ts` — Re-exports questions from config with helper functions.
+- `src/lib/utils/commentary.ts` — Generates result commentary using configurable template strings with variable interpolation ({actualRole}, {firstRole}, {correct}, {total}).
 - `src/lib/utils/persistence.ts` — localStorage wrapper for quiz state.
 
 **API routes:**
@@ -47,3 +51,4 @@ bun is the package manager. Wrangler requires npx (nvm is installed). No node/np
 - Dark theme with green accent (#4ade80), JetBrains Mono font
 - Tests live alongside source files (`*.test.ts`)
 - D1 platform binding typed in `src/app.d.ts`
+- UI branding strings come from `config.branding`, not hardcoded

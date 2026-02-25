@@ -4,7 +4,8 @@
 		"titleAccent": "namea",
 		"titleSuffix": ".dev",
 		"description": "Name a... quiz for software developers",
-		"promptPrefix": "Name a"
+		"promptPrefix": "Name a",
+		"repoUrl": "https://github.com/obroomhall/namea.dev"
 	},
 	"roles": [
 		{ "id": "student", "label": "Student" },
