@@ -165,7 +165,10 @@
 						{#if currentQuestion.docsUrl}
 							<a class="docs-link" href={currentQuestion.docsUrl} target="_blank" rel="noopener">Learn more</a>
 						{/if}
-						<button class="next-btn" onclick={() => handleJump(quizState.currentIndex + 1)}>Next</button>
+						<div class="review-actions">
+							<button class="next-btn" onclick={() => handleJump(quizState.currentIndex + 1)}>Next</button>
+							<button class="next-btn" onclick={goToResults}>Results</button>
+						</div>
 					</div>
 				{:else if !feedbackState}
 					{#key questionKey}
@@ -270,6 +273,10 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+	}
+	.review-actions {
+		display: flex;
+		gap: 0.75rem;
 	}
 	.next-btn {
 		background: transparent;
