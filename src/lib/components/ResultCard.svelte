@@ -64,6 +64,9 @@
 					{#if answer.canonical}
 						<span class="answer-canonical">{answer.canonical}</span>
 					{/if}
+					{#if question.docsUrl}
+						<a class="answer-docs" href={question.docsUrl} target="_blank" rel="noopener">?</a>
+					{/if}
 				</div>
 			{:else if answer && !answer.correct && answer.input !== '(skipped)'}
 				<div
@@ -74,6 +77,9 @@
 					<span class="answer-role">{getRoleLabel(answer.roleId)}</span>
 					<span class="answer-input">{answer.input}</span>
 					<span class="answer-status">✗</span>
+					{#if question.docsUrl}
+						<a class="answer-docs" href={question.docsUrl} target="_blank" rel="noopener">?</a>
+					{/if}
 				</div>
 			{:else}
 				<div
@@ -83,6 +89,9 @@
 					<span class="answer-index">{i + 1}.</span>
 					<span class="answer-role">{getRoleLabel(question.roleId)}</span>
 					<span class="answer-input unanswered-prompt">{question.prompt}</span>
+					{#if question.docsUrl}
+						<a class="answer-docs" href={question.docsUrl} target="_blank" rel="noopener">?</a>
+					{/if}
 				</div>
 			{/if}
 			{#if questionStats?.[i]}
@@ -212,6 +221,17 @@
 	.answer-canonical {
 		color: var(--text-dim);
 		font-size: 0.75rem;
+	}
+	.answer-docs {
+		color: var(--text-dim);
+		font-size: 0.7rem;
+		opacity: 0.4;
+		text-decoration: none;
+		flex-shrink: 0;
+	}
+	.answer-docs:hover {
+		opacity: 1;
+		color: var(--accent);
 	}
 	.answer-row.unanswered {
 		opacity: 0.4;
