@@ -184,7 +184,12 @@
 						</form>
 						<div class="input-footer question-enter">
 							<span class="hint">Press Enter to submit</span>
-							<button class="skip-btn" onclick={handleSkip}>Skip</button>
+							<div class="input-actions">
+								{#if quizState.roleLocked}
+									<button class="skip-btn" onclick={goToResults}>Results</button>
+								{/if}
+								<button class="skip-btn" onclick={handleSkip}>Skip</button>
+							</div>
 						</div>
 					{/key}
 				{:else}
@@ -303,6 +308,10 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+	}
+	.input-actions {
+		display: flex;
+		gap: 0.75rem;
 	}
 	.hint {
 		color: var(--text-dim);
