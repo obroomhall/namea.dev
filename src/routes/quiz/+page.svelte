@@ -161,6 +161,9 @@
 							{/if}
 						</div>
 					{/key}
+					{#if currentQuestion.docsUrl}
+						<a class="docs-link" href={currentQuestion.docsUrl} target="_blank" rel="noopener">Learn more</a>
+					{/if}
 					<div class="hint">Click a question in the progress bar to navigate</div>
 				{:else if !feedbackState}
 					{#key questionKey}
@@ -260,6 +263,14 @@
 		gap: 1.5rem;
 		flex: 1;
 		justify-content: center;
+	}
+	.docs-link {
+		color: var(--text-dim);
+		font-size: 0.75rem;
+		text-decoration: none;
+	}
+	.docs-link:hover {
+		color: var(--accent);
 	}
 	.input-footer {
 		display: flex;
