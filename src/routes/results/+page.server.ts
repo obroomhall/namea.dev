@@ -1,17 +1,19 @@
 import type { PageServerLoad } from './$types';
 import { getRoleLabel } from '$lib/engine/roles';
+import { config } from '$lib/data/config';
 
 export const load: PageServerLoad = async ({ url }) => {
 	const achievedRoleId = url.searchParams.get('r');
 	const actualRole = url.searchParams.get('a');
 	const correct = url.searchParams.get('c');
 	const total = url.searchParams.get('t');
+	const title = config.branding.title;
 
 	// If no URL params, this is a direct visit — OG tags will be generic
 	if (!achievedRoleId || !actualRole) {
 		return {
-			ogTitle: 'namea.dev — Quiz Results',
-			ogDescription: 'Take the quiz to find out your real engineering title.',
+			ogTitle: `${title} — Quiz Results`,
+			ogDescription: config.branding.description,
 			shared: false
 		};
 	}
@@ -29,7 +31,7 @@ export const load: PageServerLoad = async ({ url }) => {
 	}
 
 	return {
-		ogTitle: `namea.dev — ${achievedLabel}`,
+		ogTitle: `${title} — ${achievedLabel}`,
 		ogDescription: description,
 		shared: true,
 		sharedData: {

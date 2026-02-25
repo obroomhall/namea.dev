@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import { quiz } from '$lib/stores/quiz';
 	import { getRoleLabel } from '$lib/engine/roles';
+	import { config } from '$lib/data/config';
 	import { getCommentary } from '$lib/utils/commentary';
 	import { computeReach, type QuestionReachStats, type ReachRow } from '$lib/utils/reach';
 	import { QUESTIONS } from '$lib/data/questions';
@@ -117,7 +118,7 @@
 {#if isSharedView && data.sharedData && !quizState.actualRole}
 	<div class="container results-page">
 		<div class="shared-view">
-			<h1><span class="accent">namea</span>.dev</h1>
+			<h1><span class="accent">{config.branding.titleAccent}</span>{config.branding.titleSuffix}</h1>
 			<div class="shared-result">
 				<p class="shared-claim">Someone claims to be a <strong>{data.sharedData.actualRole}</strong></p>
 				<p class="shared-achieved">

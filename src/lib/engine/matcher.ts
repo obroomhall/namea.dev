@@ -33,24 +33,33 @@ function isValidBrainfuckWithOutput(input: string): boolean {
 	return depth === 0;
 }
 
+type ValidatorFn = (input: string) => MatchResult;
+
+const VALIDATORS: Record<string, ValidatorFn> = {
+	uuid: (input: string) => {
+		if (isValidUuid(input)) {
+			return { correct: true, canonical: input.trim().toLowerCase() };
+		}
+		return { correct: false };
+	},
+	brainfuck: (input: string) => {
+		if (isValidBrainfuckWithOutput(input)) {
+			return { correct: true, canonical: input.trim() };
+		}
+		return { correct: false };
+	}
+};
+
 export function checkAnswer(question: Question, input: string): MatchResult {
 	const trimmed = input.trim();
 	if (!trimmed) return { correct: false };
 
-	// Special question: UUID
-	if (question.roleId === 'linus') {
-		if (isValidUuid(trimmed)) {
-			return { correct: true, canonical: trimmed.toLowerCase() };
+	// Custom validator (e.g. uuid, brainfuck)
+	if (question.validator) {
+		const validate = VALIDATORS[question.validator];
+		if (validate) {
+			return validate(trimmed);
 		}
-		return { correct: false };
-	}
-
-	// Special question: brainfuck
-	if (question.roleId === 'the-entity') {
-		if (isValidBrainfuckWithOutput(trimmed)) {
-			return { correct: true, canonical: trimmed };
-		}
-		return { correct: false };
 	}
 
 	// Standard accept-list matching
@@ -65,7 +74,6 @@ export function checkAnswer(question: Question, input: string): MatchResult {
 }
 
 export function getExampleAnswer(question: Question): string {
-	if (question.roleId === 'linus') return '550e8400-e29b-41d4-a716-446655440000';
-	if (question.roleId === 'the-entity') return '++++++[>+++++++++<-]>.';
+	if (question.exampleAnswer) return question.exampleAnswer;
 	return question.answers[0].canonical;
 }
