@@ -48,6 +48,10 @@
 			</select>
 		</div>
 	{/if}
+
+	{#if config.branding.repoUrl}
+		<a class="repo-link entrance entrance-3" href={config.branding.repoUrl} target="_blank" rel="noopener">GitHub</a>
+	{/if}
 </div>
 
 <style>
@@ -89,5 +93,16 @@
 	}
 	.entrance-2 {
 		animation-delay: 80ms;
+	}
+	.entrance-3 {
+		animation-delay: 160ms;
+	}
+	.repo-link {
+		color: var(--text-dim);
+		font-size: 0.75rem;
+		text-decoration: none;
+	}
+	.repo-link:hover {
+		color: var(--accent);
 	}
 </style>
