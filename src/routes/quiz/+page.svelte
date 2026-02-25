@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import { quiz } from '$lib/stores/quiz';
 	import { QUESTIONS } from '$lib/data/questions';
+	import { config } from '$lib/data/config';
 	import { computeReach, type QuestionReachStats, type ReachRow } from '$lib/utils/reach';
 	import RoleDisplay from '$lib/components/RoleDisplay.svelte';
 	import Feedback from '$lib/components/Feedback.svelte';
@@ -55,8 +56,9 @@
 
 	const currentQuestion = $derived(QUESTIONS[quizState.currentIndex]);
 	const currentReach = $derived(questionStats?.[quizState.currentIndex]);
+	const placeholderPrefix = new RegExp(`^${config.branding.promptPrefix}\\s+(?:an?\\s+)?`, 'i');
 	const placeholder = $derived(
-		currentQuestion?.prompt.replace(/^Name an? /i, '').replace(/\.$/, '')
+		currentQuestion?.prompt.replace(placeholderPrefix, '').replace(/\.$/, '')
 	);
 	const isComplete = $derived(quizState.completed || quizState.currentIndex >= QUESTIONS.length);
 	const isReviewing = $derived(
@@ -139,7 +141,7 @@
 {#if quizState.actualRole}
 	<div class="container quiz-page {flashClass}">
 		<div class="quiz-header">
-			<h1><span class="accent">Name a</span>...</h1>
+			<h1><span class="accent">{config.branding.promptPrefix}</span>...</h1>
 		</div>
 
 		{#if isComplete}

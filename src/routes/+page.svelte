@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { ACTUAL_ROLES } from '$lib/engine/roles';
+	import { config } from '$lib/data/config';
 	import { quiz } from '$lib/stores/quiz';
 	import { onMount } from 'svelte';
 
@@ -29,7 +30,7 @@
 
 <div class="container landing">
 	<header class="entrance entrance-1">
-		<h1><span class="accent">namea</span>.dev</h1>
+		<h1><span class="accent">{config.branding.titleAccent}</span>{config.branding.titleSuffix}</h1>
 	</header>
 
 	{#if hasExistingSession}

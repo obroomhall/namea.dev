@@ -1,3 +1,4 @@
+import { config } from '$lib/data/config';
 import { ROLES } from '$lib/engine/roles';
 
 function roleIndex(roleId: string | null): number {
@@ -6,16 +7,13 @@ function roleIndex(roleId: string | null): number {
 }
 
 function actualRoleToId(actualRole: string): string | undefined {
-	const map: Record<string, string> = {
-		'Student': 'student',
-		'Intern': 'intern',
-		'Junior Engineer': 'junior',
-		'Mid-Level Engineer': 'mid',
-		'Senior Engineer': 'senior',
-		'Staff Engineer': 'staff',
-		'Principal Engineer': 'principal'
-	};
-	return map[actualRole];
+	// Build mapping from non-absurd role labels to their IDs
+	const role = ROLES.find((r) => !r.absurd && r.label === actualRole);
+	return role?.id;
+}
+
+function interpolate(template: string, vars: Record<string, string>): string {
+	return template.replace(/\{(\w+)\}/g, (_, key) => vars[key] ?? '');
 }
 
 export function getCommentary(
@@ -24,46 +22,50 @@ export function getCommentary(
 	correct: number,
 	total: number
 ): string {
+	const c = config.commentary;
 	const achievedIdx = roleIndex(achievedRoleId);
 	const actualId = actualRoleToId(actualRole);
 	const actualIdx = actualId ? roleIndex(actualId) : -1;
+	const firstRole = ROLES[0]?.label ?? '';
+	const vars = { actualRole, firstRole, correct: String(correct), total: String(total) };
 
 	if (correct === total) {
-		return "Perfect score. You are either a genius or suspiciously good at Googling.";
+		return interpolate(c.perfect, vars);
 	}
 
 	if (correct === 0) {
-		return "Zero correct. Genuinely impressive in its own way. Have you tried turning your career off and on again?";
+		return interpolate(c.zero, vars);
 	}
 
 	if (!achievedRoleId) {
-		return "You failed the very first question. Even the Student role rejected you.";
+		return interpolate(c.noRole, vars);
 	}
 
 	if (achievedIdx > actualIdx && actualIdx >= 0) {
 		const diff = achievedIdx - actualIdx;
 		if (diff >= 3) {
-			return `You're severely underselling yourself. Quit your job and demand the title you deserve.`;
+			return interpolate(c.overAchievedFar, vars);
 		}
-		return `Not bad — you outperformed your claimed role. Imposter syndrome, perhaps?`;
+		return interpolate(c.overAchievedClose, vars);
 	}
 
 	if (achievedIdx === actualIdx) {
-		return "You are exactly who you say you are. How boring. How accurate.";
+		return interpolate(c.exact, vars);
 	}
 
 	if (achievedIdx < actualIdx && actualIdx >= 0) {
 		const diff = actualIdx - achievedIdx;
 		if (diff >= 3) {
-			return `You claim to be a ${actualRole} but proved otherwise. Does your manager know?`;
+			return interpolate(c.underAchievedFar, vars);
 		}
-		return `Close, but your title might be slightly aspirational.`;
+		return interpolate(c.underAchievedClose, vars);
 	}
 
 	// Absurd roles achieved
-	if (achievedIdx >= 7) {
-		return "You've transcended engineering entirely. You are now a force of nature.";
+	const absurdStartIdx = ROLES.findIndex((r) => r.absurd);
+	if (absurdStartIdx >= 0 && achievedIdx >= absurdStartIdx) {
+		return interpolate(c.absurd, vars);
 	}
 
-	return `${correct} out of ${total}. The universe has noted your performance.`;
+	return interpolate(c.fallback, vars);
 }
