@@ -12,10 +12,19 @@ export const ROLES: Role[] = [
 	{ id: 'senior', label: 'Senior Engineer' },
 	{ id: 'staff', label: 'Staff Engineer' },
 	{ id: 'principal', label: 'Principal Engineer' },
-	{ id: 'mass', label: 'Mass', absurd: true },
-	{ id: 'gravitational-constant', label: 'Gravitational Constant', absurd: true },
-	{ id: 'cpu', label: 'CPU', absurd: true },
-	{ id: 'dev-null', label: '/dev/null', absurd: true }
+	{ id: 'senior-staff', label: 'Senior Staff Engineer', absurd: true },
+	{ id: 'senior-principal', label: 'Senior Principal Engineer', absurd: true },
+	{ id: 'principal-staff', label: 'Principal Staff Engineer', absurd: true },
+	{ id: 'staff-principal', label: 'Staff Principal Engineer', absurd: true },
+	{ id: 'senior-senior', label: 'Senior Senior Engineer', absurd: true },
+	{ id: 'principal-principal', label: 'Principal Principal Engineer', absurd: true },
+	{ id: 'principally-senior', label: 'Principally Senior Engineer', absurd: true },
+	{ id: 'seniorly-principal', label: 'Seniorly Principal Engineer', absurd: true },
+	{ id: 'cto', label: 'CTO', absurd: true },
+	{ id: 'ceo', label: 'CEO', absurd: true },
+	{ id: '10x', label: '10x Engineer', absurd: true },
+	{ id: 'linus', label: 'Linus Torvalds', absurd: true },
+	{ id: 'the-entity', label: 'The Entity', absurd: true }
 ];
 
 export const ACTUAL_ROLES = [

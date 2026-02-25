@@ -11,6 +11,7 @@ export interface Question {
 }
 
 export const QUESTIONS: Question[] = [
+	// 1. Student — Trivial
 	{
 		roleId: 'student',
 		prompt: 'Name a programming language.',
@@ -68,6 +69,7 @@ export const QUESTIONS: Question[] = [
 		],
 		docsUrl: 'https://en.wikipedia.org/wiki/List_of_programming_languages'
 	},
+	// 2. Intern — Easy
 	{
 		roleId: 'intern',
 		prompt: 'Name an HTTP status code.',
@@ -101,38 +103,88 @@ export const QUESTIONS: Question[] = [
 		],
 		docsUrl: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Status'
 	},
+	// 3. Junior — Easy
 	{
 		roleId: 'junior',
-		prompt: 'Name a JavaScript primitive type.',
+		prompt: 'Name a software license.',
 		answers: [
-			{ canonical: 'string', accept: ['string'] },
-			{ canonical: 'number', accept: ['number'] },
-			{ canonical: 'boolean', accept: ['boolean', 'bool'] },
-			{ canonical: 'undefined', accept: ['undefined'] },
-			{ canonical: 'null', accept: ['null'] },
-			{ canonical: 'bigint', accept: ['bigint', 'big int'] },
-			{ canonical: 'symbol', accept: ['symbol'] }
+			{ canonical: 'MIT', accept: ['mit', 'mit license'] },
+			{ canonical: 'Apache 2.0', accept: ['apache', 'apache 2', 'apache 2.0', 'apache license'] },
+			{ canonical: 'GPL', accept: ['gpl', 'gpl-2.0', 'gpl-3.0', 'gpl v2', 'gpl v3', 'gnu gpl', 'gnu general public license', 'general public license'] },
+			{ canonical: 'BSD', accept: ['bsd', 'bsd 2-clause', 'bsd 3-clause', 'bsd license'] },
+			{ canonical: 'ISC', accept: ['isc', 'isc license'] },
+			{ canonical: 'LGPL', accept: ['lgpl', 'lgpl-2.1', 'lgpl-3.0', 'lesser gpl', 'gnu lgpl'] },
+			{ canonical: 'MPL 2.0', accept: ['mpl', 'mpl 2.0', 'mozilla public license'] },
+			{ canonical: 'AGPL', accept: ['agpl', 'agpl-3.0', 'gnu agpl', 'affero gpl'] },
+			{ canonical: 'Unlicense', accept: ['unlicense', 'the unlicense'] },
+			{ canonical: 'CC0', accept: ['cc0', 'cc zero', 'creative commons zero'] },
+			{ canonical: 'Creative Commons', accept: ['creative commons', 'cc', 'cc-by', 'cc by', 'cc-by-sa', 'cc by sa'] },
+			{ canonical: 'Proprietary', accept: ['proprietary'] },
+			{ canonical: 'Public Domain', accept: ['public domain'] },
+			{ canonical: 'WTFPL', accept: ['wtfpl'] },
+			{ canonical: 'Artistic License', accept: ['artistic', 'artistic license'] },
+			{ canonical: 'Eclipse Public License', accept: ['epl', 'eclipse', 'eclipse public license'] },
+			{ canonical: 'Boost', accept: ['boost', 'boost software license', 'bsl'] },
+			{ canonical: 'zlib', accept: ['zlib', 'zlib license'] }
 		],
-		docsUrl: 'https://developer.mozilla.org/en-US/docs/Glossary/Primitive'
+		docsUrl: 'https://choosealicense.com/'
 	},
+	// 4. Mid — Easy
 	{
 		roleId: 'mid',
-		prompt: 'Name an HTTP request method.',
+		prompt: 'Name a CSS length unit.',
 		answers: [
-			{ canonical: 'GET', accept: ['get'] },
-			{ canonical: 'POST', accept: ['post'] },
-			{ canonical: 'PUT', accept: ['put'] },
-			{ canonical: 'DELETE', accept: ['delete'] },
-			{ canonical: 'PATCH', accept: ['patch'] },
-			{ canonical: 'HEAD', accept: ['head'] },
-			{ canonical: 'OPTIONS', accept: ['options'] },
-			{ canonical: 'TRACE', accept: ['trace'] },
-			{ canonical: 'CONNECT', accept: ['connect'] }
+			{ canonical: 'px', accept: ['px', 'pixel', 'pixels'] },
+			{ canonical: 'em', accept: ['em'] },
+			{ canonical: 'rem', accept: ['rem'] },
+			{ canonical: '%', accept: ['%', 'percent', 'percentage'] },
+			{ canonical: 'vw', accept: ['vw'] },
+			{ canonical: 'vh', accept: ['vh'] },
+			{ canonical: 'vmin', accept: ['vmin'] },
+			{ canonical: 'vmax', accept: ['vmax'] },
+			{ canonical: 'ch', accept: ['ch'] },
+			{ canonical: 'ex', accept: ['ex'] },
+			{ canonical: 'cm', accept: ['cm', 'centimeter', 'centimeters'] },
+			{ canonical: 'mm', accept: ['mm', 'millimeter', 'millimeters'] },
+			{ canonical: 'in', accept: ['in', 'inch', 'inches'] },
+			{ canonical: 'pt', accept: ['pt', 'point', 'points'] },
+			{ canonical: 'pc', accept: ['pc', 'pica', 'picas'] },
+			{ canonical: 'fr', accept: ['fr'] },
+			{ canonical: 'dvh', accept: ['dvh'] },
+			{ canonical: 'svh', accept: ['svh'] },
+			{ canonical: 'lvh', accept: ['lvh'] },
+			{ canonical: 'cqi', accept: ['cqi'] },
+			{ canonical: 'cqb', accept: ['cqb'] },
+			{ canonical: 'lh', accept: ['lh'] },
+			{ canonical: 'rlh', accept: ['rlh'] }
 		],
-		docsUrl: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods'
+		docsUrl: 'https://developer.mozilla.org/en-US/docs/Web/CSS/length'
 	},
+	// 5. Senior — Easy
 	{
 		roleId: 'senior',
+		prompt: 'Name a regex metacharacter.',
+		answers: [
+			{ canonical: '. (any character)', accept: ['.', 'dot', 'period'] },
+			{ canonical: '* (zero or more)', accept: ['*', 'star', 'asterisk'] },
+			{ canonical: '+ (one or more)', accept: ['+', 'plus'] },
+			{ canonical: '? (zero or one)', accept: ['?', 'question mark'] },
+			{ canonical: '^ (start of string)', accept: ['^', 'caret'] },
+			{ canonical: '$ (end of string)', accept: ['$', 'dollar'] },
+			{ canonical: '| (alternation)', accept: ['|', 'pipe'] },
+			{ canonical: '\\d (digit)', accept: ['\\d', 'd'] },
+			{ canonical: '\\w (word character)', accept: ['\\w', 'w'] },
+			{ canonical: '\\s (whitespace)', accept: ['\\s', 's'] },
+			{ canonical: '\\b (word boundary)', accept: ['\\b', 'b'] },
+			{ canonical: '[ ] (character class)', accept: ['[]', '[ ]', '[', 'bracket', 'brackets', 'character class'] },
+			{ canonical: '( ) (group)', accept: ['()', '( )', '(', 'parentheses', 'group', 'capture group'] },
+			{ canonical: '{ } (quantifier)', accept: ['{}', '{ }', '{', 'braces', 'curly braces', 'quantifier'] }
+		],
+		docsUrl: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions'
+	},
+	// 6. Staff — Easy-Med
+	{
+		roleId: 'staff',
 		prompt: 'Name a design pattern.',
 		answers: [
 			{ canonical: 'Singleton', accept: ['singleton'] },
@@ -163,8 +215,9 @@ export const QUESTIONS: Question[] = [
 		],
 		docsUrl: 'https://refactoring.guru/design-patterns/catalog'
 	},
+	// 7. Principal — Easy-Med
 	{
-		roleId: 'staff',
+		roleId: 'principal',
 		prompt: 'Name a sorting algorithm.',
 		answers: [
 			{ canonical: 'Quicksort', accept: ['quicksort', 'quick sort'] },
@@ -188,8 +241,9 @@ export const QUESTIONS: Question[] = [
 		],
 		docsUrl: 'https://en.wikipedia.org/wiki/Sorting_algorithm'
 	},
+	// 8. Senior Staff — Medium
 	{
-		roleId: 'principal',
+		roleId: 'senior-staff',
 		prompt: 'Name an HTTP request header.',
 		answers: [
 			{ canonical: 'Accept', accept: ['accept'] },
@@ -217,38 +271,209 @@ export const QUESTIONS: Question[] = [
 		],
 		docsUrl: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers'
 	},
+	// 9. Senior Principal — Medium
 	{
-		roleId: 'mass',
-		prompt: 'Name a CSS length unit.',
+		roleId: 'senior-principal',
+		prompt: 'Name a port number and its service.',
 		answers: [
-			{ canonical: 'px', accept: ['px', 'pixel', 'pixels'] },
-			{ canonical: 'em', accept: ['em'] },
-			{ canonical: 'rem', accept: ['rem'] },
-			{ canonical: '%', accept: ['%', 'percent', 'percentage'] },
-			{ canonical: 'vw', accept: ['vw'] },
-			{ canonical: 'vh', accept: ['vh'] },
-			{ canonical: 'vmin', accept: ['vmin'] },
-			{ canonical: 'vmax', accept: ['vmax'] },
-			{ canonical: 'ch', accept: ['ch'] },
-			{ canonical: 'ex', accept: ['ex'] },
-			{ canonical: 'cm', accept: ['cm', 'centimeter', 'centimeters'] },
-			{ canonical: 'mm', accept: ['mm', 'millimeter', 'millimeters'] },
-			{ canonical: 'in', accept: ['in', 'inch', 'inches'] },
-			{ canonical: 'pt', accept: ['pt', 'point', 'points'] },
-			{ canonical: 'pc', accept: ['pc', 'pica', 'picas'] },
-			{ canonical: 'fr', accept: ['fr'] },
-			{ canonical: 'dvh', accept: ['dvh'] },
-			{ canonical: 'svh', accept: ['svh'] },
-			{ canonical: 'lvh', accept: ['lvh'] },
-			{ canonical: 'cqi', accept: ['cqi'] },
-			{ canonical: 'cqb', accept: ['cqb'] },
-			{ canonical: 'lh', accept: ['lh'] },
-			{ canonical: 'rlh', accept: ['rlh'] }
+			{ canonical: '20 — FTP Data', accept: ['20', '20 ftp', '20 ftp data'] },
+			{ canonical: '21 — FTP', accept: ['21', '21 ftp'] },
+			{ canonical: '22 — SSH', accept: ['22', '22 ssh'] },
+			{ canonical: '23 — Telnet', accept: ['23', '23 telnet'] },
+			{ canonical: '25 — SMTP', accept: ['25', '25 smtp'] },
+			{ canonical: '53 — DNS', accept: ['53', '53 dns'] },
+			{ canonical: '67 — DHCP', accept: ['67', '67 dhcp'] },
+			{ canonical: '80 — HTTP', accept: ['80', '80 http'] },
+			{ canonical: '110 — POP3', accept: ['110', '110 pop3', '110 pop'] },
+			{ canonical: '143 — IMAP', accept: ['143', '143 imap'] },
+			{ canonical: '443 — HTTPS', accept: ['443', '443 https'] },
+			{ canonical: '465 — SMTPS', accept: ['465', '465 smtps'] },
+			{ canonical: '587 — SMTP Submission', accept: ['587', '587 smtp'] },
+			{ canonical: '993 — IMAPS', accept: ['993', '993 imaps'] },
+			{ canonical: '995 — POP3S', accept: ['995', '995 pop3s'] },
+			{ canonical: '3306 — MySQL', accept: ['3306', '3306 mysql'] },
+			{ canonical: '5432 — PostgreSQL', accept: ['5432', '5432 postgres', '5432 postgresql'] },
+			{ canonical: '6379 — Redis', accept: ['6379', '6379 redis'] },
+			{ canonical: '8080 — HTTP Alt', accept: ['8080', '8080 http'] },
+			{ canonical: '8443 — HTTPS Alt', accept: ['8443', '8443 https'] },
+			{ canonical: '27017 — MongoDB', accept: ['27017', '27017 mongo', '27017 mongodb'] },
+			{ canonical: '3000 — Dev Server', accept: ['3000'] },
+			{ canonical: '5000 — Dev Server', accept: ['5000'] }
 		],
-		docsUrl: 'https://developer.mozilla.org/en-US/docs/Web/CSS/length'
+		docsUrl: 'https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers'
 	},
+	// 10. Principal Staff — Medium
 	{
-		roleId: 'gravitational-constant',
+		roleId: 'principal-staff',
+		prompt: 'Name a DNS record type.',
+		answers: [
+			{ canonical: 'A', accept: ['a', 'a record'] },
+			{ canonical: 'AAAA', accept: ['aaaa', 'aaaa record', 'quad a'] },
+			{ canonical: 'CNAME', accept: ['cname', 'cname record'] },
+			{ canonical: 'MX', accept: ['mx', 'mx record'] },
+			{ canonical: 'TXT', accept: ['txt', 'txt record'] },
+			{ canonical: 'NS', accept: ['ns', 'ns record'] },
+			{ canonical: 'SOA', accept: ['soa', 'soa record'] },
+			{ canonical: 'PTR', accept: ['ptr', 'ptr record'] },
+			{ canonical: 'SRV', accept: ['srv', 'srv record'] },
+			{ canonical: 'CAA', accept: ['caa', 'caa record'] },
+			{ canonical: 'DNSKEY', accept: ['dnskey'] },
+			{ canonical: 'DS', accept: ['ds', 'ds record'] },
+			{ canonical: 'NAPTR', accept: ['naptr'] },
+			{ canonical: 'SPF', accept: ['spf', 'spf record'] },
+			{ canonical: 'DKIM', accept: ['dkim'] },
+			{ canonical: 'DMARC', accept: ['dmarc'] }
+		],
+		docsUrl: 'https://en.wikipedia.org/wiki/List_of_DNS_record_types'
+	},
+	// 11. Staff Principal — Medium
+	{
+		roleId: 'staff-principal',
+		prompt: 'Name a UNIX signal.',
+		answers: [
+			{ canonical: 'SIGKILL (9)', accept: ['sigkill', 'kill', '9', 'signal 9'] },
+			{ canonical: 'SIGTERM (15)', accept: ['sigterm', 'term', '15', 'signal 15'] },
+			{ canonical: 'SIGINT (2)', accept: ['sigint', 'int', '2', 'signal 2', 'interrupt'] },
+			{ canonical: 'SIGHUP (1)', accept: ['sighup', 'hup', '1', 'signal 1', 'hangup'] },
+			{ canonical: 'SIGQUIT (3)', accept: ['sigquit', 'quit', '3', 'signal 3'] },
+			{ canonical: 'SIGSTOP (19)', accept: ['sigstop', 'stop', '19', 'signal 19'] },
+			{ canonical: 'SIGCONT (18)', accept: ['sigcont', 'cont', '18', 'signal 18'] },
+			{ canonical: 'SIGTSTP (20)', accept: ['sigtstp', 'tstp', '20', 'signal 20'] },
+			{ canonical: 'SIGUSR1 (10)', accept: ['sigusr1', 'usr1', '10', 'signal 10'] },
+			{ canonical: 'SIGUSR2 (12)', accept: ['sigusr2', 'usr2', '12', 'signal 12'] },
+			{ canonical: 'SIGCHLD (17)', accept: ['sigchld', 'chld', '17', 'signal 17'] },
+			{ canonical: 'SIGALRM (14)', accept: ['sigalrm', 'alrm', 'alarm', '14', 'signal 14'] },
+			{ canonical: 'SIGPIPE (13)', accept: ['sigpipe', 'pipe', '13', 'signal 13'] },
+			{ canonical: 'SIGSEGV (11)', accept: ['sigsegv', 'segv', 'segfault', '11', 'signal 11'] },
+			{ canonical: 'SIGABRT (6)', accept: ['sigabrt', 'abrt', 'abort', '6', 'signal 6'] },
+			{ canonical: 'SIGFPE (8)', accept: ['sigfpe', 'fpe', '8', 'signal 8'] },
+			{ canonical: 'SIGBUS (7)', accept: ['sigbus', 'bus', '7', 'signal 7'] }
+		],
+		docsUrl: 'https://en.wikipedia.org/wiki/Signal_(IPC)'
+	},
+	// 12. Senior Senior — Medium
+	{
+		roleId: 'senior-senior',
+		prompt: 'Name a MIME type.',
+		answers: [
+			{ canonical: 'text/html', accept: ['text/html'] },
+			{ canonical: 'text/plain', accept: ['text/plain'] },
+			{ canonical: 'text/css', accept: ['text/css'] },
+			{ canonical: 'text/javascript', accept: ['text/javascript'] },
+			{ canonical: 'application/json', accept: ['application/json'] },
+			{ canonical: 'application/xml', accept: ['application/xml'] },
+			{ canonical: 'application/pdf', accept: ['application/pdf'] },
+			{ canonical: 'application/zip', accept: ['application/zip'] },
+			{ canonical: 'application/octet-stream', accept: ['application/octet-stream'] },
+			{ canonical: 'application/x-www-form-urlencoded', accept: ['application/x-www-form-urlencoded'] },
+			{ canonical: 'multipart/form-data', accept: ['multipart/form-data'] },
+			{ canonical: 'image/png', accept: ['image/png'] },
+			{ canonical: 'image/jpeg', accept: ['image/jpeg', 'image/jpg'] },
+			{ canonical: 'image/gif', accept: ['image/gif'] },
+			{ canonical: 'image/svg+xml', accept: ['image/svg+xml', 'image/svg'] },
+			{ canonical: 'image/webp', accept: ['image/webp'] },
+			{ canonical: 'audio/mpeg', accept: ['audio/mpeg', 'audio/mp3'] },
+			{ canonical: 'video/mp4', accept: ['video/mp4'] },
+			{ canonical: 'font/woff2', accept: ['font/woff2'] },
+			{ canonical: 'application/wasm', accept: ['application/wasm'] }
+		],
+		docsUrl: 'https://developer.mozilla.org/en-US/docs/Web/HTTP/MIME_types/Common_types'
+	},
+	// 13. Principal Principal — Medium
+	{
+		roleId: 'principal-principal',
+		prompt: 'Name a cryptographic algorithm.',
+		answers: [
+			{ canonical: 'AES', accept: ['aes', 'aes-128', 'aes-256', 'aes 128', 'aes 256', 'advanced encryption standard'] },
+			{ canonical: 'RSA', accept: ['rsa'] },
+			{ canonical: 'SHA-256', accept: ['sha', 'sha-1', 'sha-256', 'sha-512', 'sha1', 'sha256', 'sha512', 'sha 256'] },
+			{ canonical: 'MD5', accept: ['md5'] },
+			{ canonical: 'DES', accept: ['des', '3des', 'triple des'] },
+			{ canonical: 'Blowfish', accept: ['blowfish'] },
+			{ canonical: 'ChaCha20', accept: ['chacha', 'chacha20', 'chacha20-poly1305'] },
+			{ canonical: 'Diffie-Hellman', accept: ['diffie-hellman', 'diffie hellman', 'dh'] },
+			{ canonical: 'ECDSA', accept: ['ecdsa', 'elliptic curve dsa'] },
+			{ canonical: 'ECDH', accept: ['ecdh', 'elliptic curve diffie-hellman'] },
+			{ canonical: 'Ed25519', accept: ['ed25519', 'eddsa'] },
+			{ canonical: 'HMAC', accept: ['hmac'] },
+			{ canonical: 'bcrypt', accept: ['bcrypt'] },
+			{ canonical: 'scrypt', accept: ['scrypt'] },
+			{ canonical: 'Argon2', accept: ['argon2', 'argon2i', 'argon2d', 'argon2id'] },
+			{ canonical: 'PBKDF2', accept: ['pbkdf2'] },
+			{ canonical: 'RC4', accept: ['rc4'] },
+			{ canonical: 'Twofish', accept: ['twofish'] },
+			{ canonical: 'Curve25519', accept: ['curve25519', 'x25519'] }
+		],
+		docsUrl: 'https://en.wikipedia.org/wiki/Cryptographic_algorithm'
+	},
+	// 14. Principally Senior — Medium
+	{
+		roleId: 'principally-senior',
+		prompt: 'Name a web security vulnerability.',
+		answers: [
+			{ canonical: 'XSS', accept: ['xss', 'cross-site scripting', 'cross site scripting'] },
+			{ canonical: 'SQL Injection', accept: ['sql injection', 'sqli'] },
+			{ canonical: 'CSRF', accept: ['csrf', 'xsrf', 'cross-site request forgery', 'cross site request forgery'] },
+			{ canonical: 'SSRF', accept: ['ssrf', 'server-side request forgery', 'server side request forgery'] },
+			{ canonical: 'RCE', accept: ['rce', 'remote code execution'] },
+			{ canonical: 'Path Traversal', accept: ['path traversal', 'directory traversal'] },
+			{ canonical: 'IDOR', accept: ['idor', 'insecure direct object reference'] },
+			{ canonical: 'Open Redirect', accept: ['open redirect'] },
+			{ canonical: 'Clickjacking', accept: ['clickjacking', 'click jacking'] },
+			{ canonical: 'XXE', accept: ['xxe', 'xml external entity'] },
+			{ canonical: 'CORS Misconfiguration', accept: ['cors', 'cors misconfiguration'] },
+			{ canonical: 'Command Injection', accept: ['command injection', 'os injection', 'shell injection'] },
+			{ canonical: 'Broken Authentication', accept: ['broken authentication', 'broken auth'] },
+			{ canonical: 'Security Misconfiguration', accept: ['security misconfiguration', 'misconfiguration'] },
+			{ canonical: 'Prototype Pollution', accept: ['prototype pollution'] },
+			{ canonical: 'Denial of Service', accept: ['dos', 'ddos', 'denial of service'] },
+			{ canonical: 'Man-in-the-Middle', accept: ['mitm', 'man in the middle', 'man-in-the-middle'] },
+			{ canonical: 'Buffer Overflow', accept: ['buffer overflow'] }
+		],
+		docsUrl: 'https://owasp.org/www-project-top-ten/'
+	},
+	// 15. Seniorly Principal — Medium-Hard
+	{
+		roleId: 'seniorly-principal',
+		prompt: 'Name a TCP flag.',
+		answers: [
+			{ canonical: 'SYN', accept: ['syn', 'synchronize'] },
+			{ canonical: 'ACK', accept: ['ack', 'acknowledge'] },
+			{ canonical: 'FIN', accept: ['fin', 'finish'] },
+			{ canonical: 'RST', accept: ['rst', 'reset'] },
+			{ canonical: 'PSH', accept: ['psh', 'push'] },
+			{ canonical: 'URG', accept: ['urg', 'urgent'] },
+			{ canonical: 'ECE', accept: ['ece', 'ecn-echo', 'ecn echo'] },
+			{ canonical: 'CWR', accept: ['cwr', 'congestion window reduced'] },
+			{ canonical: 'NS', accept: ['ns', 'nonce sum'] }
+		],
+		docsUrl: 'https://en.wikipedia.org/wiki/Transmission_Control_Protocol#TCP_segment_structure'
+	},
+	// 16. CTO — Hard
+	{
+		roleId: 'cto',
+		prompt: 'Name an ASCII character by its code.',
+		answers: [
+			{ canonical: '0 — NUL', accept: ['0 nul', '0 null', '0'] },
+			{ canonical: '7 — BEL', accept: ['7 bel', '7 bell', '7'] },
+			{ canonical: '8 — BS', accept: ['8 bs', '8 backspace', '8'] },
+			{ canonical: '9 — TAB', accept: ['9 tab', '9 ht', '9'] },
+			{ canonical: '10 — LF', accept: ['10 lf', '10 linefeed', '10 newline', '10 line feed', '10'] },
+			{ canonical: '13 — CR', accept: ['13 cr', '13 carriage return', '13'] },
+			{ canonical: '27 — ESC', accept: ['27 esc', '27 escape', '27'] },
+			{ canonical: '32 — Space', accept: ['32 space', '32'] },
+			{ canonical: '48 — 0', accept: ['48 0', '48'] },
+			{ canonical: '65 — A', accept: ['65 a', '65'] },
+			{ canonical: '90 — Z', accept: ['90 z', '90'] },
+			{ canonical: '97 — a', accept: ['97 a', '97'] },
+			{ canonical: '122 — z', accept: ['122 z', '122'] },
+			{ canonical: '127 — DEL', accept: ['127 del', '127 delete', '127'] }
+		],
+		docsUrl: 'https://en.wikipedia.org/wiki/ASCII'
+	},
+	// 17. CEO — Hard
+	{
+		roleId: 'ceo',
 		prompt: 'Name a well-known RFC by number.',
 		answers: [
 			{ canonical: 'RFC 791 — Internet Protocol', accept: ['791', 'rfc 791', 'rfc791'] },
@@ -275,20 +500,56 @@ export const QUESTIONS: Question[] = [
 		],
 		docsUrl: 'https://www.rfc-editor.org/rfc-index.html'
 	},
+	// 18. 10x Engineer — Hard
 	{
-		roleId: 'cpu',
-		prompt: 'Name a valid UUID (any version — I\'ll check the format).',
+		roleId: '10x',
+		prompt: 'Name a CPU instruction.',
 		answers: [
-			// This is a special question — any valid UUID format is accepted
-			// We handle this via a custom validator, not the accept list
+			{ canonical: 'MOV', accept: ['mov', 'move'] },
+			{ canonical: 'ADD', accept: ['add'] },
+			{ canonical: 'SUB', accept: ['sub', 'subtract'] },
+			{ canonical: 'MUL', accept: ['mul', 'multiply'] },
+			{ canonical: 'DIV', accept: ['div', 'divide'] },
+			{ canonical: 'JMP', accept: ['jmp', 'jump'] },
+			{ canonical: 'JE', accept: ['je', 'jump if equal'] },
+			{ canonical: 'JNE', accept: ['jne', 'jump if not equal'] },
+			{ canonical: 'CMP', accept: ['cmp', 'compare'] },
+			{ canonical: 'PUSH', accept: ['push'] },
+			{ canonical: 'POP', accept: ['pop'] },
+			{ canonical: 'CALL', accept: ['call'] },
+			{ canonical: 'RET', accept: ['ret', 'return'] },
+			{ canonical: 'NOP', accept: ['nop', 'no-op', 'no op'] },
+			{ canonical: 'AND', accept: ['and'] },
+			{ canonical: 'OR', accept: ['or'] },
+			{ canonical: 'XOR', accept: ['xor'] },
+			{ canonical: 'NOT', accept: ['not'] },
+			{ canonical: 'SHL', accept: ['shl', 'shift left'] },
+			{ canonical: 'SHR', accept: ['shr', 'shift right'] },
+			{ canonical: 'LEA', accept: ['lea', 'load effective address'] },
+			{ canonical: 'INT', accept: ['int', 'interrupt'] },
+			{ canonical: 'HLT', accept: ['hlt', 'halt'] },
+			{ canonical: 'INC', accept: ['inc', 'increment'] },
+			{ canonical: 'DEC', accept: ['dec', 'decrement'] },
+			{ canonical: 'SYSCALL', accept: ['syscall'] }
+		],
+		docsUrl: 'https://en.wikipedia.org/wiki/X86_instruction_listings'
+	},
+	// 19. Linus Torvalds — Very Hard
+	{
+		roleId: 'linus',
+		prompt: 'Name a valid UUID.',
+		answers: [
+			// Special question — any valid UUID format is accepted
+			// Handled via custom validator in matcher.ts
 		],
 		docsUrl: 'https://en.wikipedia.org/wiki/Universally_unique_identifier'
 	},
+	// 20. The Entity — Insane
 	{
-		roleId: 'dev-null',
-		prompt: 'Name a valid brainfuck program that produces output.',
+		roleId: 'the-entity',
+		prompt: 'Name a brainfuck program that produces output.',
 		answers: [
-			// Another special question — validated by format checking
+			// Special question — validated by format checking in matcher.ts
 		],
 		docsUrl: 'https://en.wikipedia.org/wiki/Brainfuck'
 	}

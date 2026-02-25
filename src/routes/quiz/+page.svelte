@@ -161,7 +161,15 @@
 							{/if}
 						</div>
 					{/key}
-					<div class="hint">Click a question in the progress bar to navigate</div>
+					<div class="review-footer">
+						{#if currentQuestion.docsUrl}
+							<a class="docs-link" href={currentQuestion.docsUrl} target="_blank" rel="noopener">Learn more</a>
+						{/if}
+						<div class="review-actions">
+							<button class="next-btn" onclick={() => handleJump(quizState.currentIndex + 1)}>Next</button>
+							<button class="next-btn" onclick={goToResults}>Results</button>
+						</div>
+					</div>
 				{:else if !feedbackState}
 					{#key questionKey}
 						<form onsubmit={handleSubmit} class="question-enter">
@@ -176,7 +184,12 @@
 						</form>
 						<div class="input-footer question-enter">
 							<span class="hint">Press Enter to submit</span>
-							<button class="skip-btn" onclick={handleSkip}>Skip</button>
+							<div class="input-actions">
+								{#if quizState.roleLocked}
+									<button class="skip-btn" onclick={goToResults}>Results</button>
+								{/if}
+								<button class="skip-btn" onclick={handleSkip}>Skip</button>
+							</div>
 						</div>
 					{/key}
 				{:else}
@@ -261,10 +274,44 @@
 		flex: 1;
 		justify-content: center;
 	}
+	.review-footer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.review-actions {
+		display: flex;
+		gap: 0.75rem;
+	}
+	.next-btn {
+		background: transparent;
+		border: none;
+		color: var(--text-dim);
+		font-size: 0.75rem;
+		padding: 0.25rem 0;
+		cursor: pointer;
+	}
+	.next-btn:hover {
+		color: var(--text);
+		background: transparent;
+		transform: none;
+	}
+	.docs-link {
+		color: var(--text-dim);
+		font-size: 0.75rem;
+		text-decoration: none;
+	}
+	.docs-link:hover {
+		color: var(--accent);
+	}
 	.input-footer {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+	}
+	.input-actions {
+		display: flex;
+		gap: 0.75rem;
 	}
 	.hint {
 		color: var(--text-dim);
