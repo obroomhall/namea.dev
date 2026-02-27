@@ -57,6 +57,98 @@ describe('checkAnswer', () => {
 		it('accepts the teapot', () => {
 			expect(checkAnswer(q('intern'), '418').correct).toBe(true);
 		});
+
+		it('accepts text-only status names', () => {
+			expect(checkAnswer(q('intern'), 'not found').correct).toBe(true);
+			expect(checkAnswer(q('intern'), 'internal server error').correct).toBe(true);
+		});
+
+		it('accepts codes not in a curated list', () => {
+			const result = checkAnswer(q('intern'), '206');
+			expect(result.correct).toBe(true);
+			expect(result.canonical).toBe('206 Partial Content');
+		});
+
+		it('rejects invalid status codes', () => {
+			expect(checkAnswer(q('intern'), '999').correct).toBe(false);
+		});
+
+		it('rejects wrong text for a code', () => {
+			expect(checkAnswer(q('intern'), '200 not found').correct).toBe(false);
+		});
+	});
+
+	describe('sorting algorithms', () => {
+		it('accepts short form', () => {
+			expect(checkAnswer(q('principal'), 'bubble').correct).toBe(true);
+			expect(checkAnswer(q('principal'), 'merge').correct).toBe(true);
+			expect(checkAnswer(q('principal'), 'quick').correct).toBe(true);
+		});
+
+		it('still accepts full name', () => {
+			const result = checkAnswer(q('principal'), 'bubble sort');
+			expect(result.correct).toBe(true);
+			expect(result.canonical).toBe('Bubble Sort');
+		});
+	});
+
+	describe('ASCII codes', () => {
+		it('accepts code with character name', () => {
+			expect(checkAnswer(q('cto'), '42 asterisk').correct).toBe(true);
+			expect(checkAnswer(q('cto'), '64 at').correct).toBe(true);
+		});
+
+		it('accepts code with symbol', () => {
+			expect(checkAnswer(q('cto'), '33 !').correct).toBe(true);
+			expect(checkAnswer(q('cto'), '35 #').correct).toBe(true);
+		});
+
+		it('accepts code only', () => {
+			expect(checkAnswer(q('cto'), '65').correct).toBe(true);
+			expect(checkAnswer(q('cto'), '0').correct).toBe(true);
+			expect(checkAnswer(q('cto'), '127').correct).toBe(true);
+		});
+
+		it('returns correct canonical form', () => {
+			expect(checkAnswer(q('cto'), '65').canonical).toBe('65 — A');
+			expect(checkAnswer(q('cto'), '10').canonical).toBe('10 — LF');
+			expect(checkAnswer(q('cto'), '32').canonical).toBe('32 — Space');
+		});
+
+		it('accepts words in any order', () => {
+			expect(checkAnswer(q('cto'), 'A 65').correct).toBe(true);
+			expect(checkAnswer(q('cto'), 'asterisk 42').correct).toBe(true);
+			expect(checkAnswer(q('cto'), 'NUL 0').correct).toBe(true);
+		});
+
+		it('accepts control character names', () => {
+			expect(checkAnswer(q('cto'), '10 lf').correct).toBe(true);
+			expect(checkAnswer(q('cto'), '10 newline').correct).toBe(true);
+			expect(checkAnswer(q('cto'), '13 carriage return').correct).toBe(true);
+			expect(checkAnswer(q('cto'), '27 escape').correct).toBe(true);
+		});
+
+		it('handles all 128 codes', () => {
+			for (let i = 0; i <= 127; i++) {
+				expect(checkAnswer(q('cto'), String(i)).correct).toBe(true);
+			}
+		});
+
+		it('rejects wrong description for code', () => {
+			expect(checkAnswer(q('cto'), '65 B').correct).toBe(false);
+			expect(checkAnswer(q('cto'), '10 cr').correct).toBe(false);
+		});
+
+		it('rejects input without a number', () => {
+			expect(checkAnswer(q('cto'), 'hello').correct).toBe(false);
+			expect(checkAnswer(q('cto'), '').correct).toBe(false);
+		});
+
+		it('accepts digit characters by code', () => {
+			const result = checkAnswer(q('cto'), '48 0');
+			expect(result.correct).toBe(true);
+			expect(result.canonical).toBe('48 — 0');
+		});
 	});
 
 	describe('UUID question', () => {
@@ -104,7 +196,14 @@ describe('checkAnswer', () => {
 describe('getExampleAnswer', () => {
 	it('returns first canonical for standard questions', () => {
 		expect(getExampleAnswer(q('student'))).toBe('JavaScript');
-		expect(getExampleAnswer(q('intern'))).toBe('100 Continue');
+	});
+
+	it('returns example answer for HTTP status question', () => {
+		expect(getExampleAnswer(q('intern'))).toBe('200 OK');
+	});
+
+	it('returns example answer for ASCII question', () => {
+		expect(getExampleAnswer(q('cto'))).toBe('65 A');
 	});
 
 	it('returns example UUID for linus question', () => {
