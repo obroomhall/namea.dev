@@ -174,6 +174,7 @@
 					</div>
 				{:else if !feedbackState}
 					{#key questionKey}
+						<div class="question-prompt question-enter">{currentQuestion.prompt}</div>
 						<form onsubmit={handleSubmit} class="question-enter">
 							<input
 								type="text"
@@ -242,6 +243,7 @@
 <style>
 	.quiz-page {
 		min-height: 100vh;
+		min-height: 100dvh;
 		display: flex;
 		flex-direction: column;
 		gap: 2rem;
@@ -411,6 +413,10 @@
 		opacity: 0.6;
 		flex-shrink: 0;
 	}
+	.question-prompt {
+		color: var(--text-dim);
+		font-size: 0.85rem;
+	}
 	.question-enter {
 		animation: slide-up 250ms ease-out both;
 	}
@@ -425,6 +431,9 @@
 		}
 		.quiz-header h1 {
 			font-size: 1.5rem;
+		}
+		.question-section {
+			justify-content: flex-start;
 		}
 		.quiz-footer {
 			padding-bottom: 1rem;
