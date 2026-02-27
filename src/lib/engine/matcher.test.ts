@@ -83,7 +83,7 @@ describe('checkAnswer', () => {
 		});
 	});
 
-	describe('ASCII characters', () => {
+	describe('ASCII validator', () => {
 		it('accepts code with character name', () => {
 			expect(checkAnswer(q('cto'), '42 asterisk').correct).toBe(true);
 			expect(checkAnswer(q('cto'), '64 at').correct).toBe(true);
@@ -94,9 +94,56 @@ describe('checkAnswer', () => {
 			expect(checkAnswer(q('cto'), '35 #').correct).toBe(true);
 		});
 
-		it('accepts code only for printable characters', () => {
+		it('accepts code only', () => {
 			expect(checkAnswer(q('cto'), '65').correct).toBe(true);
-			expect(checkAnswer(q('cto'), '95').correct).toBe(true);
+			expect(checkAnswer(q('cto'), '0').correct).toBe(true);
+			expect(checkAnswer(q('cto'), '127').correct).toBe(true);
+		});
+
+		it('returns correct canonical form', () => {
+			expect(checkAnswer(q('cto'), '65').canonical).toBe('65 — A');
+			expect(checkAnswer(q('cto'), '10').canonical).toBe('10 — LF');
+			expect(checkAnswer(q('cto'), '32').canonical).toBe('32 — Space');
+		});
+
+		it('accepts words in any order', () => {
+			expect(checkAnswer(q('cto'), 'A 65').correct).toBe(true);
+			expect(checkAnswer(q('cto'), 'asterisk 42').correct).toBe(true);
+			expect(checkAnswer(q('cto'), 'NUL 0').correct).toBe(true);
+		});
+
+		it('accepts control character names', () => {
+			expect(checkAnswer(q('cto'), '10 lf').correct).toBe(true);
+			expect(checkAnswer(q('cto'), '10 newline').correct).toBe(true);
+			expect(checkAnswer(q('cto'), '13 carriage return').correct).toBe(true);
+			expect(checkAnswer(q('cto'), '27 escape').correct).toBe(true);
+		});
+
+		it('handles all 128 codes', () => {
+			for (let i = 0; i <= 127; i++) {
+				expect(checkAnswer(q('cto'), String(i)).correct).toBe(true);
+			}
+		});
+
+		it('rejects out-of-range codes', () => {
+			expect(checkAnswer(q('cto'), '128').correct).toBe(false);
+			expect(checkAnswer(q('cto'), '999').correct).toBe(false);
+		});
+
+		it('rejects wrong description for code', () => {
+			expect(checkAnswer(q('cto'), '65 B').correct).toBe(false);
+			expect(checkAnswer(q('cto'), '10 cr').correct).toBe(false);
+		});
+
+		it('rejects input without a number', () => {
+			expect(checkAnswer(q('cto'), 'hello').correct).toBe(false);
+			expect(checkAnswer(q('cto'), '').correct).toBe(false);
+		});
+
+		it('accepts digit characters by code', () => {
+			const result = checkAnswer(q('cto'), '48 0');
+			expect(result.correct).toBe(true);
+			expect(result.canonical).toBe('48 — 0');
 		});
 	});
 
@@ -146,6 +193,10 @@ describe('getExampleAnswer', () => {
 	it('returns first canonical for standard questions', () => {
 		expect(getExampleAnswer(q('student'))).toBe('JavaScript');
 		expect(getExampleAnswer(q('intern'))).toBe('100 Continue');
+	});
+
+	it('returns example answer for ASCII question', () => {
+		expect(getExampleAnswer(q('cto'))).toBe('65 A');
 	});
 
 	it('returns example UUID for linus question', () => {
