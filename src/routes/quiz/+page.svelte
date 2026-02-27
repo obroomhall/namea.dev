@@ -18,7 +18,7 @@
 		example?: string;
 	} | null>(null);
 	let inputValue = $state('');
-	let inputEl: HTMLInputElement | undefined = $state();
+	let inputEl: HTMLTextAreaElement | undefined = $state();
 	let flashClass = $state('');
 	let shakeInput = $state(false);
 	let questionKey = $state(0);
@@ -175,14 +175,16 @@
 				{:else if !feedbackState}
 					{#key questionKey}
 						<form onsubmit={handleSubmit} class="question-enter">
-							<input
-								type="text"
+							<textarea
+								class="text-input"
+								rows="1"
 								bind:value={inputValue}
 								bind:this={inputEl}
-								placeholder={placeholder}
+								placeholder={currentQuestion.prompt}
 								class:shake={shakeInput}
+								onkeydown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSubmit(e); } }}
 								autofocus
-							/>
+							></textarea>
 						</form>
 						<div class="input-footer question-enter">
 							<span class="hint">Press Enter to submit</span>
@@ -242,6 +244,7 @@
 <style>
 	.quiz-page {
 		min-height: 100vh;
+		min-height: 100dvh;
 		display: flex;
 		flex-direction: column;
 		gap: 2rem;
@@ -416,5 +419,25 @@
 	}
 	.shake {
 		animation: shake 300ms ease-out;
+	}
+
+	@media (max-width: 480px) {
+		.quiz-page {
+			padding-top: 2rem;
+			gap: 1.5rem;
+		}
+		.quiz-header h1 {
+			font-size: 1.5rem;
+		}
+		.question-section {
+			justify-content: flex-start;
+		}
+		.quiz-footer {
+			padding-bottom: 1rem;
+			gap: 1rem;
+		}
+		.review {
+			padding: 1rem;
+		}
 	}
 </style>

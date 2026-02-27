@@ -105,4 +105,13 @@
 	.repo-link:hover {
 		color: var(--accent);
 	}
+
+	@media (max-width: 480px) {
+		h1 {
+			font-size: 1.75rem;
+		}
+		.landing {
+			gap: 1.5rem;
+		}
+	}
 </style>

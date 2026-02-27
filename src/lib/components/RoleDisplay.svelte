@@ -174,4 +174,20 @@
 		opacity: 1;
 		border-color: var(--text-dim);
 	}
+
+	@media (max-width: 480px) {
+		.node {
+			width: 12px;
+			height: 12px;
+		}
+		.connector {
+			min-width: 0.25rem;
+		}
+		.label-current {
+			font-size: 0.75rem;
+		}
+		.label-claimed {
+			font-size: 0.65rem;
+		}
+	}
 </style>
