@@ -191,4 +191,20 @@
 	.result-entrance {
 		animation: slide-up 250ms ease-out both;
 	}
+
+	@media (max-width: 480px) {
+		.results-page {
+			padding-top: 1.5rem;
+			padding-bottom: 1.5rem;
+		}
+		h1 {
+			font-size: 1.5rem;
+		}
+		.shared-achieved {
+			font-size: 1.1rem;
+		}
+		.shared-claim {
+			font-size: 1rem;
+		}
+	}
 </style>

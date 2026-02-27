@@ -283,4 +283,37 @@
 		display: flex;
 		gap: 0.75rem;
 	}
+
+	@media (max-width: 480px) {
+		.role-comparison {
+			gap: 0.5rem;
+		}
+		.role-value {
+			font-size: 1.1rem;
+		}
+		.arrow {
+			font-size: 1.25rem;
+		}
+		.answer-row {
+			flex-wrap: wrap;
+			padding: 0.5rem;
+			gap: 0.25rem 0.5rem;
+		}
+		.answer-role {
+			min-width: auto;
+		}
+		.answer-input {
+			flex-basis: 100%;
+			padding-left: 0;
+		}
+		.reach-stats {
+			padding-left: 0.5rem;
+		}
+		.actions {
+			flex-direction: column;
+		}
+		.actions button {
+			width: 100%;
+		}
+	}
 </style>

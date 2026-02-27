@@ -417,4 +417,21 @@
 	.shake {
 		animation: shake 300ms ease-out;
 	}
+
+	@media (max-width: 480px) {
+		.quiz-page {
+			padding-top: 2rem;
+			gap: 1.5rem;
+		}
+		.quiz-header h1 {
+			font-size: 1.5rem;
+		}
+		.quiz-footer {
+			padding-bottom: 1rem;
+			gap: 1rem;
+		}
+		.review {
+			padding: 1rem;
+		}
+	}
 </style>

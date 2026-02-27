@@ -166,3 +166,18 @@ select:focus {
 	0%, 100% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent); }
 	50% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 15%, transparent); }
 }
+
+@media (max-width: 480px) {
+	.container {
+		padding: 1.5rem 0.75rem;
+	}
+
+	button {
+		padding: 0.5rem 0.875rem;
+	}
+
+	input[type="text"] {
+		font-size: 1rem;
+		padding: 0.625rem 0.75rem;
+	}
+}

@@ -128,4 +128,17 @@
 		font-size: 0.75rem;
 		margin-top: 0.25rem;
 	}
+
+	@media (max-width: 480px) {
+		.feedback {
+			padding: 1rem;
+		}
+		.actions {
+			flex-direction: column;
+		}
+		.btn {
+			width: 100%;
+			text-align: center;
+		}
+	}
 </style>
