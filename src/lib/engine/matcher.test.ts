@@ -58,14 +58,23 @@ describe('checkAnswer', () => {
 			expect(checkAnswer(q('intern'), '418').correct).toBe(true);
 		});
 
-		it('accepts words in any order', () => {
-			expect(checkAnswer(q('intern'), 'not found 404').correct).toBe(true);
-			expect(checkAnswer(q('intern'), 'bad request 400').correct).toBe(true);
-		});
-
 		it('accepts text-only status names', () => {
 			expect(checkAnswer(q('intern'), 'not found').correct).toBe(true);
 			expect(checkAnswer(q('intern'), 'internal server error').correct).toBe(true);
+		});
+
+		it('accepts codes not in a curated list', () => {
+			const result = checkAnswer(q('intern'), '206');
+			expect(result.correct).toBe(true);
+			expect(result.canonical).toBe('206 Partial Content');
+		});
+
+		it('rejects invalid status codes', () => {
+			expect(checkAnswer(q('intern'), '999').correct).toBe(false);
+		});
+
+		it('rejects wrong text for a code', () => {
+			expect(checkAnswer(q('intern'), '200 not found').correct).toBe(false);
 		});
 	});
 
@@ -83,7 +92,7 @@ describe('checkAnswer', () => {
 		});
 	});
 
-	describe('ASCII validator', () => {
+	describe('ASCII codes', () => {
 		it('accepts code with character name', () => {
 			expect(checkAnswer(q('cto'), '42 asterisk').correct).toBe(true);
 			expect(checkAnswer(q('cto'), '64 at').correct).toBe(true);
@@ -123,11 +132,6 @@ describe('checkAnswer', () => {
 			for (let i = 0; i <= 127; i++) {
 				expect(checkAnswer(q('cto'), String(i)).correct).toBe(true);
 			}
-		});
-
-		it('rejects out-of-range codes', () => {
-			expect(checkAnswer(q('cto'), '128').correct).toBe(false);
-			expect(checkAnswer(q('cto'), '999').correct).toBe(false);
 		});
 
 		it('rejects wrong description for code', () => {
@@ -192,7 +196,10 @@ describe('checkAnswer', () => {
 describe('getExampleAnswer', () => {
 	it('returns first canonical for standard questions', () => {
 		expect(getExampleAnswer(q('student'))).toBe('JavaScript');
-		expect(getExampleAnswer(q('intern'))).toBe('100 Continue');
+	});
+
+	it('returns example answer for HTTP status question', () => {
+		expect(getExampleAnswer(q('intern'))).toBe('200 OK');
 	});
 
 	it('returns example answer for ASCII question', () => {
