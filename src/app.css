@@ -85,7 +85,8 @@ button.primary:disabled {
 	filter: none;
 }
 
-input[type="text"] {
+input[type="text"],
+textarea.text-input {
 	font-family: var(--font-mono);
 	font-size: 1.125rem;
 	background: var(--bg-surface);
@@ -97,12 +98,21 @@ input[type="text"] {
 	transition: border-color 0.15s;
 }
 
-input[type="text"]:focus {
+textarea.text-input {
+	resize: none;
+	overflow: hidden;
+	line-height: 1.6;
+	field-sizing: content;
+}
+
+input[type="text"]:focus,
+textarea.text-input:focus {
 	border-color: var(--accent);
 	box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
 }
 
-input[type="text"]::placeholder {
+input[type="text"]::placeholder,
+textarea.text-input::placeholder {
 	color: var(--text-dim);
 }
 
@@ -176,7 +186,8 @@ select:focus {
 		padding: 0.5rem 0.875rem;
 	}
 
-	input[type="text"] {
+	input[type="text"],
+	textarea.text-input {
 		font-size: 1rem;
 		padding: 0.625rem 0.75rem;
 	}

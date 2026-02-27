@@ -18,7 +18,7 @@
 		example?: string;
 	} | null>(null);
 	let inputValue = $state('');
-	let inputEl: HTMLInputElement | undefined = $state();
+	let inputEl: HTMLTextAreaElement | undefined = $state();
 	let flashClass = $state('');
 	let shakeInput = $state(false);
 	let questionKey = $state(0);
@@ -174,16 +174,17 @@
 					</div>
 				{:else if !feedbackState}
 					{#key questionKey}
-						<div class="question-prompt question-enter">{currentQuestion.prompt}</div>
 						<form onsubmit={handleSubmit} class="question-enter">
-							<input
-								type="text"
+							<textarea
+								class="text-input"
+								rows="1"
 								bind:value={inputValue}
 								bind:this={inputEl}
-								placeholder={placeholder}
+								placeholder={currentQuestion.prompt}
 								class:shake={shakeInput}
+								onkeydown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSubmit(e); } }}
 								autofocus
-							/>
+							></textarea>
 						</form>
 						<div class="input-footer question-enter">
 							<span class="hint">Press Enter to submit</span>
@@ -412,10 +413,6 @@
 		white-space: nowrap;
 		opacity: 0.6;
 		flex-shrink: 0;
-	}
-	.question-prompt {
-		color: var(--text-dim);
-		font-size: 0.85rem;
 	}
 	.question-enter {
 		animation: slide-up 250ms ease-out both;
