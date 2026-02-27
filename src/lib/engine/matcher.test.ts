@@ -57,6 +57,47 @@ describe('checkAnswer', () => {
 		it('accepts the teapot', () => {
 			expect(checkAnswer(q('intern'), '418').correct).toBe(true);
 		});
+
+		it('accepts words in any order', () => {
+			expect(checkAnswer(q('intern'), 'not found 404').correct).toBe(true);
+			expect(checkAnswer(q('intern'), 'bad request 400').correct).toBe(true);
+		});
+
+		it('accepts text-only status names', () => {
+			expect(checkAnswer(q('intern'), 'not found').correct).toBe(true);
+			expect(checkAnswer(q('intern'), 'internal server error').correct).toBe(true);
+		});
+	});
+
+	describe('sorting algorithms', () => {
+		it('accepts short form', () => {
+			expect(checkAnswer(q('principal'), 'bubble').correct).toBe(true);
+			expect(checkAnswer(q('principal'), 'merge').correct).toBe(true);
+			expect(checkAnswer(q('principal'), 'quick').correct).toBe(true);
+		});
+
+		it('still accepts full name', () => {
+			const result = checkAnswer(q('principal'), 'bubble sort');
+			expect(result.correct).toBe(true);
+			expect(result.canonical).toBe('Bubble Sort');
+		});
+	});
+
+	describe('ASCII characters', () => {
+		it('accepts code with character name', () => {
+			expect(checkAnswer(q('cto'), '42 asterisk').correct).toBe(true);
+			expect(checkAnswer(q('cto'), '64 at').correct).toBe(true);
+		});
+
+		it('accepts code with symbol', () => {
+			expect(checkAnswer(q('cto'), '33 !').correct).toBe(true);
+			expect(checkAnswer(q('cto'), '35 #').correct).toBe(true);
+		});
+
+		it('accepts code only for printable characters', () => {
+			expect(checkAnswer(q('cto'), '65').correct).toBe(true);
+			expect(checkAnswer(q('cto'), '95').correct).toBe(true);
+		});
 	});
 
 	describe('UUID question', () => {

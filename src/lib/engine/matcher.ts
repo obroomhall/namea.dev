@@ -9,6 +9,10 @@ function normalize(input: string): string {
 	return input.trim().toLowerCase();
 }
 
+function sortedWords(s: string): string {
+	return normalize(s).split(/\s+/).sort().join(' ');
+}
+
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 function isValidUuid(input: string): boolean {
@@ -64,8 +68,13 @@ export function checkAnswer(question: Question, input: string): MatchResult {
 
 	// Standard accept-list matching
 	const normalized = normalize(trimmed);
+	const inputWords = sortedWords(trimmed);
 	for (const answer of question.answers) {
-		if (answer.accept.some((a) => normalize(a) === normalized)) {
+		if (
+			answer.accept.some(
+				(a) => normalize(a) === normalized || (inputWords.includes(' ') && sortedWords(a) === inputWords)
+			)
+		) {
 			return { correct: true, canonical: answer.canonical };
 		}
 	}
